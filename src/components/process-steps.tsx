@@ -5,7 +5,7 @@ import { gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 
 /** Línea de tiempo del proceso: la barra se llena con el scroll y cada paso se enciende en orden. */
 export function ProcessSteps({ steps }: { steps: readonly string[] }) {
-  const ref = React.useRef<HTMLOListElement>(null);
+  const ref = React.useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
@@ -36,11 +36,11 @@ export function ProcessSteps({ steps }: { steps: readonly string[] }) {
   );
 
   return (
-    <div className="relative mt-12">
+    <div ref={ref} className="relative mt-12">
       <div aria-hidden className="absolute left-0 right-0 top-[1.15rem] hidden h-px bg-border md:block">
         <div data-line className="h-full origin-left bg-gradient-to-r from-cyan-400 via-blue-500 to-fuchsia-500" />
       </div>
-      <ol ref={ref} className="grid gap-4 md:grid-cols-5">
+      <ol className="grid gap-4 md:grid-cols-5">
         {steps.map((step, i) => (
           <li key={step} data-step className="relative pt-0 md:pt-10">
             <span className="absolute left-0 top-0 hidden size-[2.3rem] place-items-center rounded-full border bg-background font-heading text-sm font-semibold md:grid">

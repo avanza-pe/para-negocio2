@@ -34,6 +34,17 @@
 
 3. **Deploy**. Cambiar variables exige un nuevo deploy (Deployments → Redeploy).
 
+### Opciones de "Configure Project" en Vercel
+| Opción | Qué poner |
+|---|---|
+| Framework Preset | **Next.js** (se detecta solo) |
+| Root Directory | `./` (déjalo así) |
+| Build Command / Output / Install | por defecto (`next build`), no los cambies |
+| Node.js Version (Settings → General) | 22.x o la más nueva disponible |
+| Function Region (Settings → Functions) | la más cercana a la región de tu proyecto Supabase |
+| Environment Variables | las de la tabla de arriba |
+| Plan | **Hobby es solo uso no comercial**: para mostrar/vender a empresas usa Pro (verifica los términos vigentes) |
+
 ## 3. Después del primer deploy
 1. **Supabase → Authentication → URL Configuration**: *Site URL* = tu URL de Vercel; *Redirect URLs*: `https://TU-DOMINIO/**` (y deja `http://localhost:3000/**`).
 2. **Google Cloud → tu ID de cliente OAuth**: añade `https://TU-DOMINIO` en *Orígenes autorizados de JavaScript*. La URI de redirección de Supabase no cambia.
