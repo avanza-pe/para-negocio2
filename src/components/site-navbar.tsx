@@ -11,7 +11,6 @@ import { cn } from "@/lib/utils";
 
 const LINKS = [
   { id: "servicios", label: "Servicios" },
-  { id: "proceso", label: "Proceso" },
   { id: "planes", label: "Planes" },
   { id: "faq", label: "FAQ" },
   { id: "contacto", label: "Contacto" },

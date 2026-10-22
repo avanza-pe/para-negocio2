@@ -6,11 +6,9 @@ import { ContactGlobe } from "@/components/contact-globe";
 import { CtaBanner } from "@/components/cta-banner";
 import { FaqSection } from "@/components/faq-section";
 import { HeroCollage } from "@/components/hero-collage";
-import { ImageStream } from "@/components/image-stream";
 import { HeroStage, Reveal } from "@/components/motion";
 import { Pricing } from "@/components/pricing";
-import { ProcessSteps } from "@/components/process-steps";
-import { PROCESS, SITE } from "@/lib/site";
+import { SITE } from "@/lib/site";
 
 function IconBadge({ icon: Icon }: { icon: typeof Palette }) {
   return (
@@ -63,21 +61,6 @@ export default function HomePage() {
         </div>
         <HeroCollage />
       </HeroStage>
-
-      {/* SEGUNDA SECCIÓN · STREAM DE PIEZAS */}
-      <section aria-labelledby="stream-title" className="relative overflow-hidden py-16 sm:py-24">
-        <Reveal>
-          <div className="mx-auto mb-4 max-w-3xl px-4 text-center">
-            <h2 id="stream-title" className="text-3xl font-semibold text-balance sm:text-5xl">
-              Del brief a tu feed, <span className="font-serif-display text-gradient italic font-normal">sin parar</span>
-            </h2>
-            <p className="mt-4 text-muted-foreground text-pretty">
-              Reels, posts, stories y anuncios producidos con IA y revisados por una persona. Ejemplos ilustrativos de las piezas que entregamos.
-            </p>
-          </div>
-        </Reveal>
-        <ImageStream />
-      </section>
 
       {/* SERVICIOS · BENTO */}
       <section id="servicios" className="mx-auto max-w-6xl scroll-mt-24 px-4 py-24">
@@ -138,17 +121,6 @@ export default function HomePage() {
             </BentoCard>
           </BentoGrid>
         </Reveal>
-      </section>
-
-      {/* PROCESO */}
-      <section id="proceso" className="scroll-mt-24 border-y bg-muted/30 py-24 backdrop-blur">
-        <div className="mx-auto max-w-6xl px-4">
-          <Reveal>
-            <h2 className="text-3xl font-semibold sm:text-4xl">Cómo trabajamos</h2>
-            <p className="mt-3 max-w-2xl text-muted-foreground">De la primera conversación a la medición, siempre con tu aprobación.</p>
-          </Reveal>
-          <ProcessSteps steps={PROCESS} />
-        </div>
       </section>
 
       {/* PLANES */}
