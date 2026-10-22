@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme";
 import { SITE } from "@/lib/site";
 
 export default function SiteLayout({ children }: LayoutProps<"/">) {
   return (
     <>
-      <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur">
+      <header className="sticky top-0 z-40 border-b bg-background/70 backdrop-blur-xl">
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
           <Link href="/" className="font-semibold tracking-tight">
             {SITE.name}
@@ -16,7 +17,8 @@ export default function SiteLayout({ children }: LayoutProps<"/">) {
             <Link href="/#planes" className="hover:text-foreground">Planes</Link>
             <Link href="/#contacto" className="hover:text-foreground">Contacto</Link>
           </nav>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
+            <ThemeToggle />
             <Button variant="ghost" size="sm" nativeButton={false} render={<Link href="/login" />}>
               Equipo
             </Button>

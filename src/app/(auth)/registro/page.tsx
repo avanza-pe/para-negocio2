@@ -8,8 +8,10 @@ export const metadata: Metadata = { title: "Crear cuenta", robots: { index: fals
 
 export default function SignupPage() {
   return (
-    <main className="grid min-h-screen place-items-center bg-muted/30 p-4">
-      <Card className="w-full max-w-sm">
+    <main className="relative grid min-h-screen place-items-center overflow-hidden p-4">
+      <div className="bg-grid absolute inset-0 -z-10" aria-hidden />
+      <div className="glow absolute left-1/2 top-0 -z-10 h-72 w-[36rem] -translate-x-1/2 opacity-60 blur-3xl" aria-hidden />
+      <Card className="w-full max-w-sm shadow-xl">
         <CardHeader>
           <CardTitle>Crear cuenta</CardTitle>
           <CardDescription>La primera cuenta es administradora. Las demás esperan aprobación.</CardDescription>

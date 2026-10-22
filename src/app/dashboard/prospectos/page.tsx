@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ProspectBoard } from "@/components/prospect-board";
 import { NewProspectDialog } from "@/components/dialogs";
 import { InlineSelect } from "@/components/form-bits";
 import { PageHeader } from "@/components/page-header";
@@ -28,6 +30,15 @@ export default async function ProspectsPage() {
       <PageHeader title="Prospectos" description="Pipeline comercial. Cada prospecto activo necesita una próxima acción.">
         <NewProspectDialog />
       </PageHeader>
+      <Tabs defaultValue="tablero">
+        <TabsList className="mb-4">
+          <TabsTrigger value="tablero">Tablero</TabsTrigger>
+          <TabsTrigger value="tabla">Tabla</TabsTrigger>
+        </TabsList>
+        <TabsContent value="tablero">
+          <ProspectBoard prospects={rows} />
+        </TabsContent>
+        <TabsContent value="tabla">
       <Card className="overflow-x-auto p-0">
         <Table>
           <TableHeader>
@@ -92,6 +103,8 @@ export default async function ProspectsPage() {
           </TableBody>
         </Table>
       </Card>
+        </TabsContent>
+      </Tabs>
     </>
   );
 }

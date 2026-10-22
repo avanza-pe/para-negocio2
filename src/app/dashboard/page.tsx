@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CalendarClock, CircleDollarSign, Handshake, Percent, Target, Wallet } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { FunnelChart } from "@/components/funnel-chart";
 import { PageHeader } from "@/components/page-header";
@@ -33,12 +34,12 @@ export default async function DashboardPage() {
   const conversion = total ? ((won / total) * 100).toFixed(1) : "0.0";
 
   const kpis = [
-    { label: "Prospectos", value: total },
-    { label: "Reuniones agendadas", value: counts.reunion_agendada },
-    { label: "Clientes ganados", value: won },
-    { label: "Conversión", value: `${conversion}%` },
-    { label: "Facturación recurrente", value: pen.format(mrr) },
-    { label: "Pagos por cobrar", value: unpaid },
+    { label: "Prospectos", value: total, icon: Target, tone: "bg-sky-500/10 text-sky-600 dark:text-sky-400" },
+    { label: "Reuniones agendadas", value: counts.reunion_agendada, icon: CalendarClock, tone: "bg-amber-500/10 text-amber-600 dark:text-amber-400" },
+    { label: "Clientes ganados", value: won, icon: Handshake, tone: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" },
+    { label: "Conversión", value: `${conversion}%`, icon: Percent, tone: "bg-violet-500/10 text-violet-600 dark:text-violet-400" },
+    { label: "Facturación recurrente", value: pen.format(mrr), icon: CircleDollarSign, tone: "bg-primary/10 text-primary" },
+    { label: "Pagos por cobrar", value: unpaid, icon: Wallet, tone: "bg-rose-500/10 text-rose-600 dark:text-rose-400" },
   ];
 
   return (
@@ -47,9 +48,14 @@ export default async function DashboardPage() {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {kpis.map((k) => (
           <Card key={k.label}>
-            <CardHeader>
-              <CardDescription>{k.label}</CardDescription>
-              <CardTitle className="text-3xl">{k.value}</CardTitle>
+            <CardHeader className="flex-row items-start justify-between">
+              <div>
+                <CardDescription>{k.label}</CardDescription>
+                <CardTitle className="mt-1 font-heading text-3xl">{k.value}</CardTitle>
+              </div>
+              <span className={`grid size-10 place-items-center rounded-xl ${k.tone}`}>
+                <k.icon className="size-5" />
+              </span>
             </CardHeader>
           </Card>
         ))}

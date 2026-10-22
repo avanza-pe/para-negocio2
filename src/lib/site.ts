@@ -57,4 +57,15 @@ export const SERVICES_LIST = [
   { title: "Landing pages", text: "Una página clara, rápida y pensada para convertir visitas en conversaciones." },
 ] as const;
 
+export const FAQ = [
+  { q: "¿Qué pasa en el diagnóstico de 15 minutos?", a: "Revisamos tu negocio, tu público y tu objetivo, y te decimos con honestidad si podemos ayudarte y con qué paquete. No tiene costo ni compromiso." },
+  { q: "¿La IA publica por mí sin que lo vea nadie?", a: "No. La IA acelera la producción, pero una persona revisa cada entrega y nada se publica sin tu aprobación." },
+  { q: "¿Los precios incluyen la inversión en anuncios?", a: "No. La inversión en Meta o TikTok se paga aparte y directamente por ti. Los planes cubren creatividad, producción y gestión." },
+  { q: "¿Garantizan ventas?", a: "No prometemos ventas garantizadas. Medimos la métrica del objetivo que contratamos juntos y reportamos solo datos verificables." },
+  { q: "¿Cómo se paga?", a: "Por transferencia bancaria, Yape o Plin según lo acordado. El trabajo inicia al confirmarse el primer pago." },
+  { q: "¿Cuántas revisiones incluye?", a: "Cada plan detalla sus rondas de cambios; por ejemplo, Contenido Inicio incluye 1 ronda. Todo queda por escrito en la propuesta." },
+] as const;
+
+export const TOOLS = ["ChatGPT", "Canva", "CapCut", "Meta Business Suite", "Google Analytics", "WhatsApp Business", "Calendly", "Supabase"] as const;
+
 export const PROCESS = ["Diagnóstico", "Propuesta", "Producción", "Aprobación", "Entrega y medición"] as const;
