@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ContactGlobe } from "@/components/contact-globe";
 import { CtaBanner } from "@/components/cta-banner";
 import { FaqSection } from "@/components/faq-section";
+import { JsonLd } from "@/components/json-ld";
 import { HeroCollage } from "@/components/hero-collage";
 import { HeroStage, Reveal } from "@/components/motion";
 import { Pricing } from "@/components/pricing";
@@ -18,20 +19,10 @@ function IconBadge({ icon: Icon }: { icon: typeof Palette }) {
   );
 }
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  name: SITE.name,
-  description: SITE.description,
-  url: SITE.url,
-  areaServed: "PE",
-  serviceType: ["Marketing digital", "Contenido para redes sociales", "Automatización de leads", "Landing pages"],
-};
-
 export default function HomePage() {
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\u003c") }} />
+      <JsonLd />
       {/* HERO */}
       <HeroStage className="relative px-4 pb-12 pt-16 text-center sm:pt-24">
         <div className="mx-auto max-w-4xl">

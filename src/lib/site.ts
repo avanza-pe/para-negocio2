@@ -5,12 +5,13 @@ export const SITE = {
   name: "AVANZA",
   tagline: "Haz que tu negocio avance con contenido y automatización con IA",
   description:
-    "Agencia de marketing digital en Perú: contenido para redes, videos, campañas creativas, automatización de leads y landing pages, acelerados con IA y supervisados por personas.",
+    "Agencia de marketing digital con IA en Perú: contenido para redes, videos, campañas y automatización de leads. Diagnóstico de 15 minutos sin costo.",
   url: publicEnv.NEXT_PUBLIC_SITE_URL,
   bookingUrl: publicEnv.NEXT_PUBLIC_BOOKING_URL,
   whatsapp: publicEnv.NEXT_PUBLIC_WHATSAPP_NUMBER,
   contactEmail: publicEnv.NEXT_PUBLIC_CONTACT_EMAIL,
   gaId: publicEnv.NEXT_PUBLIC_GA_ID,
+  gscVerification: publicEnv.NEXT_PUBLIC_GSC_VERIFICATION,
 } as const;
 
 export const whatsappLink = (text = "Hola, quiero agendar un diagnóstico de 15 minutos") =>

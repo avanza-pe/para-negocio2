@@ -65,3 +65,13 @@
 - Rota la `service_role` de Supabase y la clave de Brevo si se compartieron por chat; actualiza `.env.local` y Vercel.
 - Desactiva *Allow new users to sign up* en Supabase (Authentication → Providers → Email) cuando tu equipo ya esté creado.
 - Considera un dominio propio en Vercel (Settings → Domains) cuando haya clientes validados.
+
+## 6. Que te encuentren (después del deploy)
+1. **`NEXT_PUBLIC_SITE_URL` debe ser la URL real** (canonical, sitemap, imagen para compartir y datos estructurados salen de ahí). Redeploy si la cambias.
+2. **Google Search Console** → añade tu URL como propiedad → método *Etiqueta HTML* → copia solo el valor de `content` a `NEXT_PUBLIC_GSC_VERIFICATION` en Vercel → Redeploy → *Verificar*.
+3. En Search Console → **Sitemaps** → envía `sitemap.xml` → en *Inspección de URL* pide indexar la home.
+4. **Google Business Profile** (perfil de empresa): crea la ficha con tu correo, WhatsApp y la web; ayuda al SEO local en Perú.
+5. **Bing Webmaster Tools**: importa la propiedad desde Search Console.
+6. Prueba cómo se ve al compartir: pega la URL en WhatsApp / [opengraph.xyz](https://www.opengraph.xyz). Datos estructurados: [Rich Results Test](https://search.google.com/test/rich-results).
+7. Mide **Lighthouse** (Chrome DevTools → Lighthouse) en la URL de producción; objetivo: SEO y accesibilidad > 90.
+8. Pon el enlace de la web en tus perfiles (Instagram, TikTok, WhatsApp Business, LinkedIn): los enlaces entrantes pesan más que cualquier etiqueta.

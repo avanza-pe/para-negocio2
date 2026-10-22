@@ -8,6 +8,7 @@ const publicSchema = z.object({
   NEXT_PUBLIC_WHATSAPP_NUMBER: z.string().optional(),
   NEXT_PUBLIC_CONTACT_EMAIL: z.string().optional(),
   NEXT_PUBLIC_GA_ID: z.string().optional(),
+  NEXT_PUBLIC_GSC_VERIFICATION: z.string().optional(),
 });
 
 // Las variables NEXT_PUBLIC_* se inlinean solo con acceso literal (process.env.X).
@@ -19,4 +20,5 @@ export const publicEnv = publicSchema.parse({
   NEXT_PUBLIC_WHATSAPP_NUMBER: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || undefined,
   NEXT_PUBLIC_CONTACT_EMAIL: process.env.NEXT_PUBLIC_CONTACT_EMAIL || undefined,
   NEXT_PUBLIC_GA_ID: process.env.NEXT_PUBLIC_GA_ID || undefined,
+  NEXT_PUBLIC_GSC_VERIFICATION: process.env.NEXT_PUBLIC_GSC_VERIFICATION || undefined,
 });
