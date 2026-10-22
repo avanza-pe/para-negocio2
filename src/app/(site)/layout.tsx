@@ -2,11 +2,13 @@ import Link from "next/link";
 import { Logo } from "@/components/logo";
 import { SiteBackground } from "@/components/site-background";
 import { SiteNavbar } from "@/components/site-navbar";
+import { SmoothScroll } from "@/components/smooth-scroll";
 import { SITE } from "@/lib/site";
 
 export default function SiteLayout({ children }: LayoutProps<"/">) {
   return (
     <>
+      <SmoothScroll />
       <SiteBackground />
       <SiteNavbar />
       <main className="flex-1 pt-20">{children}</main>

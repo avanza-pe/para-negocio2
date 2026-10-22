@@ -139,6 +139,16 @@
   }
 }
 
+/* Estado inicial de las animaciones GSAP (solo si hay JS y el usuario no pidió menos movimiento) */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal],
+  .js [data-hero],
+  .js [data-card] {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
 @keyframes marquee {
   from { transform: translateX(0); }
   to { transform: translateX(calc(-50% - 0.5rem)); }

@@ -1,15 +1,17 @@
-import { ArrowRight, Bot, CalendarCheck, Clapperboard, LayoutTemplate, Megaphone, Palette, ShieldCheck } from "lucide-react";
+import { ArrowRight, Bot, CalendarCheck, Clapperboard, LayoutTemplate, Megaphone, Palette, Play, ShieldCheck } from "lucide-react";
 import { AnalyticsBento, type BentoData } from "@/components/analytics-bento";
+import { BentoCard, BentoGrid } from "@/components/bento";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { ContactGlobe } from "@/components/contact-globe";
 import { CtaBanner } from "@/components/cta-banner";
 import { FaqSection } from "@/components/faq-section";
 import { HeroCollage } from "@/components/hero-collage";
 import { Marquee } from "@/components/marquee";
-import { Reveal } from "@/components/motion";
+import { HeroStage, Reveal } from "@/components/motion";
 import { Pricing } from "@/components/pricing";
+import { ProcessSteps } from "@/components/process-steps";
 import { PROCESS, SITE, TOOLS } from "@/lib/site";
 
 const SAMPLE: BentoData = {
@@ -41,54 +43,46 @@ const SAMPLES = [
   { title: "Campaña de temporada", sector: "Clínica dental", tone: "from-fuchsia-500/30 to-amber-400/20" },
 ];
 
-const SERVICES = [
-  { icon: Palette, title: "Contenido para redes", text: "Piezas gráficas, copies y calendario editorial alineados a tu marca.", span: "md:col-span-3" },
-  { icon: Clapperboard, title: "Videos publicitarios", text: "Reels y videos cortos editados para captar atención en los primeros segundos.", span: "md:col-span-3" },
-  { icon: Megaphone, title: "Campañas creativas", text: "Ideas y creatividades para lanzamientos, promociones y fechas clave.", span: "md:col-span-2" },
-  { icon: Bot, title: "Automatización de leads", text: "Formulario, CRM y avisos para que ninguna consulta se pierda.", span: "md:col-span-2" },
-  { icon: LayoutTemplate, title: "Landing pages", text: "Una página clara y rápida que convierte visitas en conversaciones.", span: "md:col-span-2" },
-];
+function IconBadge({ icon: Icon }: { icon: typeof Palette }) {
+  return (
+    <span className="grid size-11 place-items-center rounded-2xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+      <Icon className="size-5" />
+    </span>
+  );
+}
 
 export default function HomePage() {
   return (
     <>
       {/* HERO */}
-      <section className="relative px-4 pb-12 pt-16 text-center sm:pt-24">
+      <HeroStage className="relative px-4 pb-12 pt-16 text-center sm:pt-24">
         <div className="mx-auto max-w-4xl">
-          <Reveal>
+          <div data-hero>
             <Badge variant="secondary" className="mb-6 gap-1.5 rounded-full px-3 py-1">
               <span className="size-1.5 rounded-full bg-cyan-400" /> Marketing digital con IA · Perú
             </Badge>
-          </Reveal>
-          <Reveal delay={0.05}>
-            <h1 className="text-balance text-5xl font-semibold leading-[1.05] sm:text-7xl">
-              Haz que tu negocio{" "}
-              <span className="font-serif-display text-gradient pr-1 text-[1.12em] font-normal italic">avance</span> con contenido y automatización con IA
-            </h1>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground text-pretty">
-              Producimos contenido, videos y automatizaciones con IA. Una persona revisa cada entrega antes de que llegue a ti.
-            </p>
-          </Reveal>
-          <Reveal delay={0.15}>
-            <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <Button size="lg" className="h-11 rounded-full px-6 text-base" nativeButton={false} render={<a href={SITE.bookingUrl || "#contacto"} />}>
-                <CalendarCheck /> Agenda un diagnóstico de 15 min
-              </Button>
-              <Button size="lg" variant="outline" className="h-11 rounded-full px-6 text-base" nativeButton={false} render={<a href="#contacto" />}>
-                Solicita una propuesta <ArrowRight />
-              </Button>
-            </div>
-            <p className="mt-5 flex items-center justify-center gap-2 text-sm text-muted-foreground">
-              <ShieldCheck className="size-4 text-cyan-400" /> Diagnóstico sin costo · Nada se publica sin tu aprobación
-            </p>
-          </Reveal>
+          </div>
+          <h1 data-hero className="text-balance text-5xl font-semibold leading-[1.05] sm:text-7xl">
+            Haz que tu negocio{" "}
+            <span className="font-serif-display text-gradient pr-1 text-[1.12em] font-normal italic">avance</span> con contenido y automatización con IA
+          </h1>
+          <p data-hero className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground text-pretty">
+            Producimos contenido, videos y automatizaciones con IA. Una persona revisa cada entrega antes de que llegue a ti.
+          </p>
+          <div data-hero className="mt-8 flex flex-wrap justify-center gap-3">
+            <Button size="lg" className="h-11 rounded-full px-6 text-base" nativeButton={false} render={<a href={SITE.bookingUrl || "#contacto"} />}>
+              <CalendarCheck /> Agenda un diagnóstico de 15 min
+            </Button>
+            <Button size="lg" variant="outline" className="h-11 rounded-full px-6 text-base" nativeButton={false} render={<a href="#contacto" />}>
+              Solicita una propuesta <ArrowRight />
+            </Button>
+          </div>
+          <p data-hero className="mt-5 flex items-center justify-center gap-2 text-sm text-muted-foreground">
+            <ShieldCheck className="size-4 text-cyan-400" /> Diagnóstico sin costo · Nada se publica sin tu aprobación
+          </p>
         </div>
-        <Reveal delay={0.25}>
-          <HeroCollage />
-        </Reveal>
-      </section>
+        <HeroCollage />
+      </HeroStage>
 
       {/* HERRAMIENTAS REALES */}
       <section aria-label="Herramientas que usamos" className="border-y bg-background/50 py-5 backdrop-blur">
@@ -96,27 +90,65 @@ export default function HomePage() {
         <Marquee items={[...TOOLS, ...TOOLS]} />
       </section>
 
-      {/* SERVICIOS */}
+      {/* SERVICIOS · BENTO */}
       <section id="servicios" className="mx-auto max-w-6xl scroll-mt-24 px-4 py-24">
         <Reveal>
           <h2 className="text-3xl font-semibold sm:text-4xl">Todo lo que tu marca necesita para mostrarse y vender</h2>
           <p className="mt-3 max-w-2xl text-muted-foreground">Cinco servicios, un solo proceso claro.</p>
         </Reveal>
-        <div className="mt-10 grid gap-4 md:grid-cols-6">
-          {SERVICES.map(({ icon: Icon, title, text, span }, i) => (
-            <Reveal key={title} delay={i * 0.05} className={span}>
-              <Card className="group h-full bg-card/70 backdrop-blur transition-all hover:-translate-y-0.5 hover:shadow-lg hover:ring-primary/30">
-                <CardContent className="flex h-full flex-col gap-3">
-                  <span className="grid size-10 place-items-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
-                    <Icon className="size-5" />
+        <Reveal delay={0.05} className="mt-10">
+          <BentoGrid>
+            <BentoCard className="md:col-span-3 md:row-span-2">
+              <IconBadge icon={Palette} />
+              <h3 className="mt-4 text-xl font-semibold">Contenido para redes</h3>
+              <p className="mt-1 max-w-sm text-sm text-muted-foreground">Piezas gráficas, copies y calendario editorial alineados a tu marca.</p>
+              <div aria-hidden className="mt-6 grid flex-1 grid-cols-7 content-end gap-1.5">
+                {Array.from({ length: 28 }).map((_, i) => (
+                  <span key={i} className={`aspect-square rounded-md ${[2, 5, 9, 12, 16, 19, 23, 26].includes(i) ? "bg-gradient-to-br from-cyan-400 to-blue-600" : "bg-muted"}`} />
+                ))}
+              </div>
+            </BentoCard>
+
+            <BentoCard className="md:col-span-3">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <IconBadge icon={Clapperboard} />
+                  <h3 className="mt-4 text-xl font-semibold">Videos publicitarios</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">Reels y videos cortos editados para captar atención en los primeros segundos.</p>
+                </div>
+                <span aria-hidden className="mt-2 hidden aspect-[9/14] w-20 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-blue-600 via-violet-600 to-fuchsia-500 text-white sm:grid">
+                  <Play className="size-5 fill-current" />
+                </span>
+              </div>
+            </BentoCard>
+
+            <BentoCard className="md:col-span-3">
+              <IconBadge icon={Megaphone} />
+              <h3 className="mt-4 text-xl font-semibold">Campañas creativas</h3>
+              <p className="mt-1 text-sm text-muted-foreground">Ideas y creatividades para lanzamientos, promociones y fechas clave.</p>
+            </BentoCard>
+
+            <BentoCard className="md:col-span-3">
+              <IconBadge icon={Bot} />
+              <h3 className="mt-4 text-xl font-semibold">Automatización de leads</h3>
+              <p className="mt-1 text-sm text-muted-foreground">Formulario, CRM y avisos para que ninguna consulta se pierda.</p>
+              <div aria-hidden className="mt-4 flex items-center gap-2 text-xs text-muted-foreground">
+                {["Formulario", "CRM", "Aviso"].map((s, i) => (
+                  <span key={s} className="flex items-center gap-2">
+                    <span className="rounded-full border bg-background/60 px-2.5 py-1">{s}</span>
+                    {i < 2 && <ArrowRight className="size-3.5 text-primary" />}
                   </span>
-                  <h3 className="text-lg font-semibold">{title}</h3>
-                  <p className="text-sm text-muted-foreground">{text}</p>
-                </CardContent>
-              </Card>
-            </Reveal>
-          ))}
-        </div>
+                ))}
+              </div>
+            </BentoCard>
+
+            <BentoCard className="md:col-span-3">
+              <IconBadge icon={LayoutTemplate} />
+              <h3 className="mt-4 text-xl font-semibold">Landing pages</h3>
+              <p className="mt-1 text-sm text-muted-foreground">Una página clara y rápida que convierte visitas en conversaciones.</p>
+            </BentoCard>
+          </BentoGrid>
+        </Reveal>
       </section>
 
       {/* PROCESO */}
@@ -126,16 +158,7 @@ export default function HomePage() {
             <h2 className="text-3xl font-semibold sm:text-4xl">Cómo trabajamos</h2>
             <p className="mt-3 max-w-2xl text-muted-foreground">De la primera conversación a la medición, siempre con tu aprobación.</p>
           </Reveal>
-          <ol className="mt-10 grid gap-4 md:grid-cols-5">
-            {PROCESS.map((step, i) => (
-              <Reveal key={step} delay={i * 0.06}>
-                <li className="h-full rounded-2xl border bg-card/80 p-5">
-                  <span className="font-heading text-3xl font-semibold text-gradient">0{i + 1}</span>
-                  <p className="mt-2 font-medium">{step}</p>
-                </li>
-              </Reveal>
-            ))}
-          </ol>
+          <ProcessSteps steps={PROCESS} />
         </div>
       </section>
 
@@ -160,8 +183,8 @@ export default function HomePage() {
         </Reveal>
         <div className="mt-10 grid gap-4 sm:grid-cols-3">
           {SAMPLES.map((s, i) => (
-            <Reveal key={s.title} delay={i * 0.06}>
-              <Card className="overflow-hidden bg-card/70 p-0 backdrop-blur">
+            <Reveal key={s.title} delay={i * 0.08}>
+              <Card className="overflow-hidden bg-card/70 p-0 backdrop-blur transition-transform duration-300 hover:-translate-y-1">
                 <div className={`grid aspect-[4/3] place-items-center bg-gradient-to-br ${s.tone}`}>
                   <span className="rounded-full bg-background/70 px-3 py-1 text-xs backdrop-blur">Muestra · {s.sector}</span>
                 </div>

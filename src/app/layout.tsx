@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/theme";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { SITE } from "@/lib/site";
+import Script from "next/script";
 import "./globals.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -27,6 +28,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="es-PE" suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable} ${display.variable} ${serif.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
+        {/* Marca "js" antes de hidratar: oculta los elementos animados sin parpadeo. Sin JS todo queda visible. */}
+        <Script id="js-flag" strategy="beforeInteractive">
+          {"document.documentElement.classList.add('js');setTimeout(function(){if(!window.__gsapReady)document.documentElement.classList.remove('js')},4000)"}
+        </Script>
         <ThemeProvider>
           <TooltipProvider>{children}</TooltipProvider>
           <Toaster richColors position="top-right" />
