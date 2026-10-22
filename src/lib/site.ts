@@ -2,14 +2,14 @@ import { publicEnv } from "@/lib/env";
 
 /** Nombre provisional (informe §8, 08:30). Cámbialo aquí y se actualiza en toda la web. */
 export const SITE = {
-  name: "Impulso Digital IA",
-  tagline: "Contenido y automatización para que tu negocio convierta más consultas en oportunidades",
+  name: "AVANZA",
+  tagline: "Haz que tu negocio avance con contenido y automatización con IA",
   description:
     "Agencia de marketing digital en Perú: contenido para redes, videos, campañas creativas, automatización de leads y landing pages, acelerados con IA y supervisados por personas.",
   url: publicEnv.NEXT_PUBLIC_SITE_URL,
   bookingUrl: publicEnv.NEXT_PUBLIC_BOOKING_URL,
   whatsapp: publicEnv.NEXT_PUBLIC_WHATSAPP_NUMBER,
-  contactEmail: "hola@tudominio.pe",
+  contactEmail: publicEnv.NEXT_PUBLIC_CONTACT_EMAIL,
 } as const;
 
 export const whatsappLink = (text = "Hola, quiero agendar un diagnóstico de 15 minutos") =>
@@ -66,6 +66,6 @@ export const FAQ = [
   { q: "¿Cuántas revisiones incluye?", a: "Cada plan detalla sus rondas de cambios; por ejemplo, Contenido Inicio incluye 1 ronda. Todo queda por escrito en la propuesta." },
 ] as const;
 
-export const TOOLS = ["ChatGPT", "Canva", "CapCut", "Meta Business Suite", "Google Analytics", "WhatsApp Business", "Calendly", "Supabase"] as const;
+export const TOOLS = ["ChatGPT", "Canva", "CapCut", "Meta Business Suite", "Calendly"] as const;
 
 export const PROCESS = ["Diagnóstico", "Propuesta", "Producción", "Aprobación", "Entrega y medición"] as const;

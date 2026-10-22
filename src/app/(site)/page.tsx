@@ -1,112 +1,111 @@
-import {
-  ArrowRight,
-  Bot,
-  CalendarCheck,
-  Check,
-  Clapperboard,
-  LayoutTemplate,
-  Megaphone,
-  MessageCircle,
-  Palette,
-  ShieldCheck,
-} from "lucide-react";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { ArrowRight, Bot, CalendarCheck, Clapperboard, LayoutTemplate, Megaphone, Palette, ShieldCheck } from "lucide-react";
+import { AnalyticsBento, type BentoData } from "@/components/analytics-bento";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { HeroPreview } from "@/components/hero-preview";
-import { LeadForm } from "@/components/lead-form";
+import { ContactGlobe } from "@/components/contact-globe";
+import { CtaBanner } from "@/components/cta-banner";
+import { FaqSection } from "@/components/faq-section";
+import { HeroCollage } from "@/components/hero-collage";
 import { Marquee } from "@/components/marquee";
 import { Reveal } from "@/components/motion";
-import { FAQ, PACKAGES, PROCESS, SITE, TOOLS, whatsappLink } from "@/lib/site";
+import { Pricing } from "@/components/pricing";
+import { PROCESS, SITE, TOOLS } from "@/lib/site";
 
-const FACTS = [
-  { value: "15 min", label: "diagnóstico sin costo" },
-  { value: "100%", label: "entregas revisadas por una persona" },
-  { value: "1 ronda", label: "de cambios incluida en el plan inicial" },
-  { value: "0", label: "ventas prometidas: solo métricas reales" },
-];
+const SAMPLE: BentoData = {
+  labels: ["Mes 1", "Mes 2", "Mes 3", "Mes 4", "Mes 5", "Mes 6"],
+  line: [12, 18, 15, 26, 31, 42],
+  lineLabel: "Consultas generadas (ejemplo)",
+  waveA: [10, 14, 12, 20, 24, 30],
+  waveALabel: "Orgánico",
+  waveB: [4, 6, 9, 8, 14, 18],
+  waveBLabel: "Campañas",
+  categories: [
+    { name: "Reels", value: 38 },
+    { name: "Posts", value: 29 },
+    { name: "Stories", value: 18 },
+    { name: "Landing", value: 12 },
+  ],
+  radar: [
+    { name: "Alcance", value: 70 },
+    { name: "Clics", value: 55 },
+    { name: "Consultas", value: 80 },
+    { name: "Cierres", value: 40 },
+    { name: "Retención", value: 60 },
+  ],
+};
 
 const SAMPLES = [
-  { title: "Calendario de contenido", sector: "Restaurante", tone: "from-violet-500/30 to-fuchsia-500/20" },
-  { title: "Reel de lanzamiento", sector: "Tienda de ropa", tone: "from-sky-500/30 to-emerald-500/20" },
-  { title: "Campaña de temporada", sector: "Clínica dental", tone: "from-amber-500/30 to-rose-500/20" },
+  { title: "Calendario de contenido", sector: "Restaurante", tone: "from-cyan-500/30 to-blue-600/20" },
+  { title: "Reel de lanzamiento", sector: "Tienda de ropa", tone: "from-blue-600/30 to-fuchsia-500/20" },
+  { title: "Campaña de temporada", sector: "Clínica dental", tone: "from-fuchsia-500/30 to-amber-400/20" },
+];
+
+const SERVICES = [
+  { icon: Palette, title: "Contenido para redes", text: "Piezas gráficas, copies y calendario editorial alineados a tu marca.", span: "md:col-span-3" },
+  { icon: Clapperboard, title: "Videos publicitarios", text: "Reels y videos cortos editados para captar atención en los primeros segundos.", span: "md:col-span-3" },
+  { icon: Megaphone, title: "Campañas creativas", text: "Ideas y creatividades para lanzamientos, promociones y fechas clave.", span: "md:col-span-2" },
+  { icon: Bot, title: "Automatización de leads", text: "Formulario, CRM y avisos para que ninguna consulta se pierda.", span: "md:col-span-2" },
+  { icon: LayoutTemplate, title: "Landing pages", text: "Una página clara y rápida que convierte visitas en conversaciones.", span: "md:col-span-2" },
 ];
 
 export default function HomePage() {
-  const wa = whatsappLink();
-
   return (
     <>
       {/* HERO */}
-      <section className="relative overflow-hidden border-b">
-        <div className="bg-grid absolute inset-0 -z-10" aria-hidden />
-        <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 py-20 lg:grid-cols-[1.15fr_1fr] lg:py-28">
-          <div>
-            <Reveal>
-              <Badge variant="secondary" className="mb-5 gap-1.5 px-3 py-1">
-                <span className="size-1.5 rounded-full bg-emerald-500" /> Marketing digital con IA · Perú
-              </Badge>
-            </Reveal>
-            <Reveal delay={0.05}>
-              <h1 className="text-4xl font-semibold text-balance sm:text-6xl">
-                Contenido y automatización para que tu negocio{" "}
-                <span className="text-gradient">convierta más consultas</span> en oportunidades
-              </h1>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <p className="mt-5 max-w-xl text-lg text-muted-foreground text-pretty">
-                Producimos contenido, videos y automatizaciones con IA. Una persona revisa cada entrega antes de que llegue a ti.
-              </p>
-            </Reveal>
-            <Reveal delay={0.15}>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Button size="lg" className="h-11 px-5 text-base" nativeButton={false} render={<a href={SITE.bookingUrl || "#contacto"} />}>
-                  <CalendarCheck /> Agenda un diagnóstico de 15 min
-                </Button>
-                <Button size="lg" variant="outline" className="h-11 px-5 text-base" nativeButton={false} render={<a href="#contacto" />}>
-                  Solicita una propuesta <ArrowRight />
-                </Button>
-              </div>
-            </Reveal>
-          </div>
-          <Reveal delay={0.2}>
-            <HeroPreview />
+      <section className="relative px-4 pb-12 pt-16 text-center sm:pt-24">
+        <div className="mx-auto max-w-4xl">
+          <Reveal>
+            <Badge variant="secondary" className="mb-6 gap-1.5 rounded-full px-3 py-1">
+              <span className="size-1.5 rounded-full bg-cyan-400" /> Marketing digital con IA · Perú
+            </Badge>
+          </Reveal>
+          <Reveal delay={0.05}>
+            <h1 className="text-balance text-5xl font-semibold leading-[1.05] sm:text-7xl">
+              Haz que tu negocio{" "}
+              <span className="font-serif-display text-gradient pr-1 text-[1.12em] font-normal italic">avance</span> con contenido y automatización con IA
+            </h1>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground text-pretty">
+              Producimos contenido, videos y automatizaciones con IA. Una persona revisa cada entrega antes de que llegue a ti.
+            </p>
+          </Reveal>
+          <Reveal delay={0.15}>
+            <div className="mt-8 flex flex-wrap justify-center gap-3">
+              <Button size="lg" className="h-11 rounded-full px-6 text-base" nativeButton={false} render={<a href={SITE.bookingUrl || "#contacto"} />}>
+                <CalendarCheck /> Agenda un diagnóstico de 15 min
+              </Button>
+              <Button size="lg" variant="outline" className="h-11 rounded-full px-6 text-base" nativeButton={false} render={<a href="#contacto" />}>
+                Solicita una propuesta <ArrowRight />
+              </Button>
+            </div>
+            <p className="mt-5 flex items-center justify-center gap-2 text-sm text-muted-foreground">
+              <ShieldCheck className="size-4 text-cyan-400" /> Diagnóstico sin costo · Nada se publica sin tu aprobación
+            </p>
           </Reveal>
         </div>
-        <div className="border-t bg-background/60 py-4">
-          <Marquee items={TOOLS} />
-        </div>
+        <Reveal delay={0.25}>
+          <HeroCollage />
+        </Reveal>
       </section>
 
-      {/* HECHOS */}
-      <section className="mx-auto max-w-6xl px-4 py-14">
-        <dl className="grid grid-cols-2 gap-6 lg:grid-cols-4">
-          {FACTS.map((f, i) => (
-            <Reveal key={f.label} delay={i * 0.05}>
-              <dt className="font-heading text-4xl font-semibold text-gradient">{f.value}</dt>
-              <dd className="mt-1 text-sm text-muted-foreground">{f.label}</dd>
-            </Reveal>
-          ))}
-        </dl>
+      {/* HERRAMIENTAS REALES */}
+      <section aria-label="Herramientas que usamos" className="border-y bg-background/50 py-5 backdrop-blur">
+        <p className="mb-3 text-center text-xs uppercase tracking-widest text-muted-foreground">Herramientas con las que producimos y medimos</p>
+        <Marquee items={[...TOOLS, ...TOOLS]} />
       </section>
 
-      {/* SERVICIOS · BENTO */}
-      <section id="servicios" className="mx-auto max-w-6xl scroll-mt-20 px-4 pb-20">
+      {/* SERVICIOS */}
+      <section id="servicios" className="mx-auto max-w-6xl scroll-mt-24 px-4 py-24">
         <Reveal>
           <h2 className="text-3xl font-semibold sm:text-4xl">Todo lo que tu marca necesita para mostrarse y vender</h2>
           <p className="mt-3 max-w-2xl text-muted-foreground">Cinco servicios, un solo proceso claro.</p>
         </Reveal>
         <div className="mt-10 grid gap-4 md:grid-cols-6">
-          {[
-            { icon: Palette, title: "Contenido para redes", text: "Piezas gráficas, copies y calendario editorial alineados a tu marca.", span: "md:col-span-3" },
-            { icon: Clapperboard, title: "Videos publicitarios", text: "Reels y videos cortos editados para captar atención en los primeros segundos.", span: "md:col-span-3" },
-            { icon: Megaphone, title: "Campañas creativas", text: "Ideas y creatividades para lanzamientos, promociones y fechas clave.", span: "md:col-span-2" },
-            { icon: Bot, title: "Automatización de leads", text: "Formulario, CRM y avisos para que ninguna consulta se pierda.", span: "md:col-span-2" },
-            { icon: LayoutTemplate, title: "Landing pages", text: "Una página clara y rápida que convierte visitas en conversaciones.", span: "md:col-span-2" },
-          ].map(({ icon: Icon, title, text, span }, i) => (
+          {SERVICES.map(({ icon: Icon, title, text, span }, i) => (
             <Reveal key={title} delay={i * 0.05} className={span}>
-              <Card className="group h-full transition-all hover:-translate-y-0.5 hover:shadow-lg hover:ring-primary/30">
+              <Card className="group h-full bg-card/70 backdrop-blur transition-all hover:-translate-y-0.5 hover:shadow-lg hover:ring-primary/30">
                 <CardContent className="flex h-full flex-col gap-3">
                   <span className="grid size-10 place-items-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
                     <Icon className="size-5" />
@@ -121,7 +120,7 @@ export default function HomePage() {
       </section>
 
       {/* PROCESO */}
-      <section id="proceso" className="scroll-mt-20 border-y bg-muted/40 py-20">
+      <section id="proceso" className="scroll-mt-24 border-y bg-muted/30 py-24 backdrop-blur">
         <div className="mx-auto max-w-6xl px-4">
           <Reveal>
             <h2 className="text-3xl font-semibold sm:text-4xl">Cómo trabajamos</h2>
@@ -130,23 +129,31 @@ export default function HomePage() {
           <ol className="mt-10 grid gap-4 md:grid-cols-5">
             {PROCESS.map((step, i) => (
               <Reveal key={step} delay={i * 0.06}>
-                <li className="relative h-full rounded-2xl border bg-card p-5">
-                  <span className="font-heading text-3xl font-semibold text-primary/70">0{i + 1}</span>
+                <li className="h-full rounded-2xl border bg-card/80 p-5">
+                  <span className="font-heading text-3xl font-semibold text-gradient">0{i + 1}</span>
                   <p className="mt-2 font-medium">{step}</p>
                 </li>
               </Reveal>
             ))}
           </ol>
-          <Reveal>
-            <p className="mt-6 flex items-center gap-2 text-sm text-muted-foreground">
-              <ShieldCheck className="size-4 text-primary" /> Nada se publica ni se entrega sin aprobación humana.
-            </p>
-          </Reveal>
         </div>
       </section>
 
+      {/* MÉTRICAS · BENTO */}
+      <section id="metricas" className="mx-auto max-w-6xl scroll-mt-24 px-4 py-24">
+        <Reveal>
+          <h2 className="text-3xl font-semibold sm:text-4xl">Medimos lo que importa</h2>
+          <p className="mt-3 max-w-2xl text-muted-foreground">
+            Reportamos la métrica del objetivo que contratamos juntos, solo con datos verificables. Esto es un ejemplo ilustrativo del tipo de reporte.
+          </p>
+        </Reveal>
+        <Reveal delay={0.1} className="mt-10">
+          <AnalyticsBento data={SAMPLE} sample />
+        </Reveal>
+      </section>
+
       {/* PORTAFOLIO */}
-      <section id="portafolio" className="mx-auto max-w-6xl scroll-mt-20 px-4 py-20">
+      <section id="portafolio" className="mx-auto max-w-6xl scroll-mt-24 px-4 pb-24">
         <Reveal>
           <h2 className="text-3xl font-semibold sm:text-4xl">Portafolio</h2>
           <p className="mt-3 text-muted-foreground">Muestras conceptuales de nuestro trabajo propio. No son resultados de clientes.</p>
@@ -154,7 +161,7 @@ export default function HomePage() {
         <div className="mt-10 grid gap-4 sm:grid-cols-3">
           {SAMPLES.map((s, i) => (
             <Reveal key={s.title} delay={i * 0.06}>
-              <Card className="overflow-hidden p-0">
+              <Card className="overflow-hidden bg-card/70 p-0 backdrop-blur">
                 <div className={`grid aspect-[4/3] place-items-center bg-gradient-to-br ${s.tone}`}>
                   <span className="rounded-full bg-background/70 px-3 py-1 text-xs backdrop-blur">Muestra · {s.sector}</span>
                 </div>
@@ -169,100 +176,33 @@ export default function HomePage() {
       </section>
 
       {/* PLANES */}
-      <section id="planes" className="scroll-mt-20 border-y bg-muted/40 py-20">
+      <section id="planes" className="scroll-mt-24 border-y bg-muted/30 py-24 backdrop-blur">
         <div className="mx-auto max-w-6xl px-4">
           <Reveal>
-            <h2 className="text-3xl font-semibold sm:text-4xl">Planes de lanzamiento</h2>
-            <p className="mt-3 max-w-2xl text-muted-foreground">
-              Precios orientativos de lanzamiento. La inversión publicitaria en Meta/TikTok se cobra aparte.
-            </p>
+            <div className="mb-10 text-center">
+              <h2 className="text-3xl font-semibold sm:text-4xl">Planes de lanzamiento</h2>
+              <p className="mx-auto mt-3 max-w-xl text-muted-foreground">Elige cómo quieres empezar. Todo queda por escrito en la propuesta.</p>
+            </div>
           </Reveal>
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {PACKAGES.map((p, i) => {
-              const featured = "featured" in p && p.featured;
-              return (
-                <Reveal key={p.name} delay={i * 0.05}>
-                  <Card className={`relative h-full ${featured ? "ring-2 ring-primary shadow-xl shadow-primary/10" : ""}`}>
-                    {featured && (
-                      <Badge className="absolute -top-2.5 left-4">Más elegido</Badge>
-                    )}
-                    <CardContent className="flex h-full flex-col gap-4">
-                      <div>
-                        <h3 className="font-semibold">{p.name}</h3>
-                        <p className="mt-2">
-                          <span className="font-heading text-3xl font-semibold">{p.price}</span>{" "}
-                          <span className="text-sm text-muted-foreground">{p.unit}</span>
-                        </p>
-                      </div>
-                      <ul className="grid gap-2 text-sm">
-                        {p.items.map((it) => (
-                          <li key={it} className="flex gap-2">
-                            <Check className="mt-0.5 size-4 shrink-0 text-primary" /> {it}
-                          </li>
-                        ))}
-                      </ul>
-                      <Button
-                        variant={featured ? "default" : "outline"}
-                        className="mt-auto w-full"
-                        nativeButton={false}
-                        render={<a href="#contacto" />}
-                      >
-                        Quiero este plan
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </Reveal>
-              );
-            })}
-          </div>
+          <Pricing />
         </div>
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="mx-auto max-w-3xl scroll-mt-20 px-4 py-20">
+      <section id="faq" className="mx-auto max-w-6xl scroll-mt-24 px-4 py-24">
+        <FaqSection />
+      </section>
+
+      {/* CTA */}
+      <section className="mx-auto max-w-6xl px-4 pb-24">
         <Reveal>
-          <h2 className="text-3xl font-semibold sm:text-4xl">Preguntas frecuentes</h2>
+          <CtaBanner />
         </Reveal>
-        <Accordion className="mt-8">
-          {FAQ.map((f) => (
-            <AccordionItem key={f.q} value={f.q}>
-              <AccordionTrigger className="text-left text-base">{f.q}</AccordionTrigger>
-              <AccordionContent className="text-muted-foreground">{f.a}</AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
       </section>
 
       {/* CONTACTO */}
-      <section id="contacto" className="relative scroll-mt-20 overflow-hidden border-t">
-        <div className="glow absolute left-1/2 top-0 -z-10 h-80 w-[40rem] -translate-x-1/2 opacity-60 blur-3xl" aria-hidden />
-        <div className="mx-auto grid max-w-6xl gap-10 px-4 py-20 lg:grid-cols-2">
-          <Reveal>
-            <h2 className="text-3xl font-semibold sm:text-4xl">Cuéntanos sobre tu negocio</h2>
-            <p className="mt-3 text-muted-foreground">
-              Te respondemos con una propuesta breve adaptada a tu marca. Sin compromiso.
-            </p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              {SITE.bookingUrl && (
-                <Button variant="outline" nativeButton={false} render={<a href={SITE.bookingUrl} />}>
-                  <CalendarCheck /> Reserva una llamada
-                </Button>
-              )}
-              {wa && (
-                <Button variant="outline" nativeButton={false} render={<a href={wa} target="_blank" rel="noopener noreferrer" />}>
-                  <MessageCircle /> WhatsApp
-                </Button>
-              )}
-            </div>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <Card className="shadow-xl">
-              <CardContent>
-                <LeadForm />
-              </CardContent>
-            </Card>
-          </Reveal>
-        </div>
+      <section id="contacto" className="mx-auto max-w-6xl scroll-mt-24 px-4 pb-28">
+        <ContactGlobe />
       </section>
     </>
   );

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CalendarClock, CircleDollarSign, Handshake, Percent, Target, Wallet } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { AnalyticsBento, type BentoData } from "@/components/analytics-bento";
 import { FunnelChart } from "@/components/funnel-chart";
 import { PageHeader } from "@/components/page-header";
 import { requireStaff } from "@/lib/auth";
@@ -13,7 +14,7 @@ export default async function DashboardPage() {
   const today = new Date().toISOString().slice(0, 10);
 
   const [prospects, clients, due] = await Promise.all([
-    supabase.from("prospects").select("stage"),
+    supabase.from("prospects").select("stage, channel, sector, created_at"),
     supabase.from("clients").select("price_pen, payment_status"),
     supabase
       .from("prospects")
@@ -32,6 +33,40 @@ export default async function DashboardPage() {
   const mrr = (clients.data ?? []).reduce((sum, c) => sum + Number(c.price_pen), 0);
   const unpaid = (clients.data ?? []).filter((c) => c.payment_status !== "pagado").length;
   const conversion = total ? ((won / total) * 100).toFixed(1) : "0.0";
+
+  // Bento con datos reales: últimos 6 meses
+  const months = Array.from({ length: 6 }, (_, i) => {
+    const d = new Date();
+    d.setDate(1);
+    d.setMonth(d.getMonth() - (5 - i));
+    return { key: d.toISOString().slice(0, 7), label: d.toLocaleDateString("es-PE", { month: "short" }) };
+  });
+  const perMonth = (pred: (p: { channel: string }) => boolean) =>
+    months.map((m) => (prospects.data ?? []).filter((p) => p.created_at.slice(0, 7) === m.key && pred(p)).length);
+  const sectorCount = new Map<string, number>();
+  for (const p of prospects.data ?? []) {
+    const k = p.sector?.trim() || "Sin rubro";
+    sectorCount.set(k, (sectorCount.get(k) ?? 0) + 1);
+  }
+  const pct = (n: number) => (total ? Math.round((n / total) * 100) : 0);
+  const reached = (stages: string[]) => stages.reduce((s, k) => s + (counts[k] ?? 0), 0);
+  const bento: BentoData = {
+    labels: months.map((m) => m.label),
+    line: perMonth(() => true),
+    lineLabel: "Prospectos nuevos",
+    waveA: perMonth((p) => p.channel === "web"),
+    waveALabel: "Web",
+    waveB: perMonth((p) => p.channel !== "web"),
+    waveBLabel: "Otros canales",
+    categories: [...sectorCount].sort((a, b) => b[1] - a[1]).slice(0, 4).map(([name, value]) => ({ name, value })),
+    radar: [
+      { name: "Contactados", value: pct(reached(["contactado", "respondio", "reunion_agendada", "propuesta_enviada", "ganado"])) },
+      { name: "Respondieron", value: pct(reached(["respondio", "reunion_agendada", "propuesta_enviada", "ganado"])) },
+      { name: "Reunión", value: pct(reached(["reunion_agendada", "propuesta_enviada", "ganado"])) },
+      { name: "Propuesta", value: pct(reached(["propuesta_enviada", "ganado"])) },
+      { name: "Ganados", value: pct(won) },
+    ],
+  };
 
   const kpis = [
     { label: "Prospectos", value: total, icon: Target, tone: "bg-sky-500/10 text-sky-600 dark:text-sky-400" },
@@ -59,6 +94,10 @@ export default async function DashboardPage() {
             </CardHeader>
           </Card>
         ))}
+      </div>
+
+      <div className="mt-4">
+        <AnalyticsBento data={bento} />
       </div>
 
       <div className="mt-4 grid gap-4 lg:grid-cols-2">

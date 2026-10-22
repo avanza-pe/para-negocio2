@@ -24,7 +24,7 @@ export default function PrivacyPage() {
       <h2>Cuánto tiempo los conservamos</h2>
       <p>Mientras exista una relación comercial o hasta que solicites su eliminación.</p>
       <h2>Tus derechos</h2>
-      <p>Puedes pedir acceso, rectificación, cancelación u oposición escribiendo a {SITE.contactEmail}. Respetamos toda solicitud de no contacto.</p>
+      <p>Puedes pedir acceso, rectificación, cancelación u oposición {SITE.contactEmail ? `escribiendo a ${SITE.contactEmail}` : "a través del formulario de contacto"}. Respetamos toda solicitud de no contacto.</p>
     </article>
   );
 }

@@ -14,6 +14,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { Logo } from "@/components/logo";
 import { logout } from "@/lib/actions/auth";
 
 const NAV = [
@@ -29,7 +30,9 @@ export function AppSidebar({ siteName, userName }: { siteName: string; userName:
   const pathname = usePathname();
   return (
     <Sidebar>
-      <SidebarHeader className="px-4 py-3 font-semibold tracking-tight">{siteName}</SidebarHeader>
+      <SidebarHeader className="px-4 py-3" aria-label={siteName}>
+        <Logo />
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>

@@ -2,8 +2,8 @@
 export function Marquee({ items }: { items: readonly string[] }) {
   const row = (hidden: boolean) => (
     <ul aria-hidden={hidden || undefined} className="flex shrink-0 items-center gap-8 pr-8">
-      {items.map((it) => (
-        <li key={it} className="whitespace-nowrap text-sm font-medium text-muted-foreground">
+      {items.map((it, i) => (
+        <li key={`${it}-${i}`} className="whitespace-nowrap text-sm font-medium text-muted-foreground">
           {it}
         </li>
       ))}
