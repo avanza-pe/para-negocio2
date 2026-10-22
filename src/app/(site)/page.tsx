@@ -26,10 +26,10 @@ export default function HomePage() {
             Producimos contenido, videos y automatizaciones con IA, y una persona revisa cada entrega antes de que llegue a ti.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Button size="lg" className="h-11 px-5 text-base" render={<a href={SITE.bookingUrl || "#contacto"} />}>
+            <Button size="lg" className="h-11 px-5 text-base" nativeButton={false} render={<a href={SITE.bookingUrl || "#contacto"} />}>
               <CalendarCheck /> Agenda un diagnóstico de 15 minutos
             </Button>
-            <Button size="lg" variant="outline" className="h-11 px-5 text-base" render={<a href="#contacto" />}>
+            <Button size="lg" variant="outline" className="h-11 px-5 text-base" nativeButton={false} render={<a href="#contacto" />}>
               Solicita una propuesta <ArrowRight />
             </Button>
           </div>
@@ -120,12 +120,12 @@ export default function HomePage() {
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             {SITE.bookingUrl && (
-              <Button variant="outline" render={<a href={SITE.bookingUrl} />}>
+              <Button variant="outline" nativeButton={false} render={<a href={SITE.bookingUrl} />}>
                 <CalendarCheck /> Reserva una llamada
               </Button>
             )}
             {wa && (
-              <Button variant="outline" render={<a href={wa} target="_blank" rel="noopener noreferrer" />}>
+              <Button variant="outline" nativeButton={false} render={<a href={wa} target="_blank" rel="noopener noreferrer" />}>
                 <MessageCircle /> WhatsApp
               </Button>
             )}

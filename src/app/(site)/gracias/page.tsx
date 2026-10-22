@@ -16,11 +16,11 @@ export default function ThanksPage() {
       </p>
       <div className="mt-6 flex justify-center gap-3">
         {SITE.bookingUrl && (
-          <Button render={<a href={SITE.bookingUrl} />}>
+          <Button nativeButton={false} render={<a href={SITE.bookingUrl} />}>
             <CalendarCheck /> Reserva una llamada
           </Button>
         )}
-        <Button variant="outline" render={<Link href="/" />}>
+        <Button variant="outline" nativeButton={false} render={<Link href="/" />}>
           Volver al inicio
         </Button>
       </div>

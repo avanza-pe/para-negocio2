@@ -17,10 +17,10 @@ export default function SiteLayout({ children }: LayoutProps<"/">) {
             <Link href="/#contacto" className="hover:text-foreground">Contacto</Link>
           </nav>
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" render={<Link href="/login" />}>
+            <Button variant="ghost" size="sm" nativeButton={false} render={<Link href="/login" />}>
               Equipo
             </Button>
-            <Button size="sm" render={<Link href="/#contacto" />}>
+            <Button size="sm" nativeButton={false} render={<Link href="/#contacto" />}>
               Agenda un diagnóstico
             </Button>
           </div>

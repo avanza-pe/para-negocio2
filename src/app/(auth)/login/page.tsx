@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { GoogleButton } from "@/components/google-button";
 import { LoginForm } from "./login-form";
 
 export const metadata: Metadata = { title: "Ingresar", robots: { index: false } };
@@ -20,6 +21,12 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
               El enlace de confirmación no es válido o venció. Intenta ingresar de nuevo.
             </p>
           )}
+          {error === "google" && (
+            <p role="alert" className="text-sm text-destructive">
+              No se pudo ingresar con Google. Intenta de nuevo.
+            </p>
+          )}
+          <GoogleButton />
           <LoginForm next={typeof next === "string" ? next : undefined} />
           <p className="text-center text-sm text-muted-foreground">
             ¿Sin cuenta?{" "}

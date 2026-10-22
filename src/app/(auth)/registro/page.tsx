@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { GoogleButton } from "@/components/google-button";
 import { SignupForm } from "./signup-form";
 
 export const metadata: Metadata = { title: "Crear cuenta", robots: { index: false } };
@@ -14,6 +15,7 @@ export default function SignupPage() {
           <CardDescription>La primera cuenta es administradora. Las demás esperan aprobación.</CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">
+          <GoogleButton />
           <SignupForm />
           <p className="text-center text-sm text-muted-foreground">
             ¿Ya tienes cuenta?{" "}

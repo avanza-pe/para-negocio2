@@ -45,6 +45,16 @@ export async function signup(_: ActionState, formData: FormData): Promise<Action
   return { ok: true };
 }
 
+export async function signInWithGoogle() {
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: { redirectTo: `${publicEnv.NEXT_PUBLIC_SITE_URL}/auth/callback` },
+  });
+  if (error || !data.url) redirect("/login?error=google");
+  redirect(data.url);
+}
+
 export async function logout() {
   const supabase = await createClient();
   await supabase.auth.signOut();
