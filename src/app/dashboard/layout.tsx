@@ -20,11 +20,11 @@ export default async function DashboardLayout({ children }: LayoutProps<"/dashbo
 
   return (
     <SidebarProvider>
-      <AppSidebar siteName={SITE.name} userName={display} />
+      <AppSidebar siteName={SITE.name} userName={display} isAdmin={profile.role === "admin"} />
       <SidebarInset className="min-w-0">
         <header className="sticky top-0 z-30 flex h-14 items-center gap-2 border-b bg-background/80 px-3 backdrop-blur-xl md:px-5">
           <SidebarTrigger className="hidden md:inline-flex" />
-          <span className="text-sm font-medium md:hidden">AVANZA</span>
+          <span className="text-sm font-medium md:hidden">{SITE.name}</span>
           <div className="ml-auto flex items-center gap-1.5">
             <Button variant="ghost" size="icon" className="relative" aria-label={`Pendientes de hoy: ${pending}`} nativeButton={false} render={<Link href="/dashboard/hoy" />}>
               <Bell />

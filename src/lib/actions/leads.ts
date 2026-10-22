@@ -1,9 +1,9 @@
 "use server";
 
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { limaDate } from "@/lib/dates";
+import { clientIp, rateLimiter } from "@/lib/origin";
 import { normalizePhone } from "@/lib/phone";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { notifyNewLead } from "@/lib/notify";
@@ -24,18 +24,8 @@ const leadSchema = z.object({
 // Anti-abuso del formulario público (además del campo trampa): límite por IP en memoria
 // y un tope global por ventana de tiempo, calculado en la base.
 const WINDOW_MS = 10 * 60 * 1000;
-const PER_IP = 5;
 const GLOBAL_MAX = 60;
-const hits = new Map<string, number[]>();
-
-function tooManyFromIp(ip: string) {
-  const now = Date.now();
-  const recent = (hits.get(ip) ?? []).filter((t) => now - t < WINDOW_MS);
-  recent.push(now);
-  hits.set(ip, recent);
-  if (hits.size > 5000) hits.clear(); // evita crecimiento sin límite
-  return recent.length > PER_IP;
-}
+const tooManyFromIp = rateLimiter(5, WINDOW_MS);
 
 /** Flujo A del informe: formulario → fila en CRM → aviso. Maneja campos vacíos y duplicados. */
 export async function submitLead(_: ActionState, formData: FormData): Promise<ActionState> {
@@ -43,8 +33,7 @@ export async function submitLead(_: ActionState, formData: FormData): Promise<Ac
   if (!parsed.success) return { fieldErrors: z.flattenError(parsed.error).fieldErrors };
 
   const lead = parsed.data;
-  const ip = (await headers()).get("x-forwarded-for")?.split(",")[0]?.trim() ?? "desconocida";
-  if (tooManyFromIp(ip)) return { error: "Demasiados envíos seguidos. Intenta de nuevo en unos minutos." };
+  if (tooManyFromIp(await clientIp())) return { error: "Demasiados envíos seguidos. Intenta de nuevo en unos minutos." };
 
   const db = createAdminClient();
   const { count } = await db

@@ -7,10 +7,14 @@ type Lead = { company: string; contact_name: string; contact_email: string; cont
 
 export const esc = (s: string) => s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 
-/** Aviso interno al equipo por correo (Brevo) y Telegram. Lo que no esté configurado se omite. */
+/**
+ * Aviso interno al equipo por correo (Brevo) y Telegram. Lo que no esté configurado se omite.
+ * Nunca lanza; devuelve el error del correo (si hubo) para registrarlo.
+ */
 export async function notifyTeam({ subject, html, text }: { subject: string; html: string; text: string }) {
   const to = process.env.NOTIFY_EMAIL_TO;
-  await Promise.allSettled([to ? sendMail({ to, subject, html }) : Promise.resolve(false), sendTelegram(`${subject}\n\n${text}`)]);
+  const [mail] = await Promise.allSettled([to ? sendMail({ to, subject, html }) : Promise.resolve(false), sendTelegram(`${subject}\n\n${text}`)]);
+  return mail.status === "rejected" ? String(mail.reason instanceof Error ? mail.reason.message : mail.reason) : null;
 }
 
 /** Aviso de lead nuevo (o repetido). El lead ya está guardado: si el aviso falla no se pierde nada. */

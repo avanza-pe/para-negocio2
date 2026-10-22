@@ -1,25 +1,15 @@
 "use server";
 
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
-import { publicEnv } from "@/lib/env";
+import { currentOrigin } from "@/lib/origin";
 import type { ActionState } from "./types";
 
 const credentials = z.object({
   email: z.string().trim().toLowerCase().email("Correo no válido"),
   password: z.string().min(8, "Mínimo 8 caracteres").max(72),
 });
-
-// Origen real de la petición (funciona en local, en Vercel y en previews sin depender de una variable).
-async function currentOrigin() {
-  const h = await headers();
-  const host = h.get("x-forwarded-host") ?? h.get("host");
-  if (!host) return publicEnv.NEXT_PUBLIC_SITE_URL;
-  const proto = h.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
-  return `${proto}://${host}`;
-}
 
 // Solo rutas internas, para evitar open-redirect.
 const safeNext = (v: FormDataEntryValue | null) =>
