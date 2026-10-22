@@ -43,6 +43,14 @@ export const ONBOARDING_CHECKLIST = [
   "Crear las primeras entregas en el panel",
 ] as const;
 
+export const CONTENT_STATUS = [
+  { value: "borrador", label: "Borrador" },
+  { value: "en_revision", label: "En revisión" },
+  { value: "aprobado", label: "Aprobado" },
+  { value: "publicado", label: "Publicado" },
+  { value: "descartado", label: "Descartado" },
+] as const;
+
 export const SERVICES = [
   "Contenido Inicio",
   "Contenido + Reels",
@@ -98,6 +106,22 @@ export type ClientBrief = {
   restrictions: string | null;
   approver: string | null;
   access_notes: string | null;
+};
+
+export type ContentItem = {
+  id: string;
+  client_id: string;
+  pillar: string | null;
+  format: string | null;
+  objective: string | null;
+  visual_idea: string | null;
+  hook: string | null;
+  copy: string | null;
+  cta: string | null;
+  metric: string | null;
+  scheduled_for: string | null;
+  status: string;
+  ai_generated: boolean;
 };
 
 export type Client = {

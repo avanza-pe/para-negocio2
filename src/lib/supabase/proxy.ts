@@ -22,9 +22,12 @@ export async function updateSession(request: NextRequest) {
     },
   );
 
+  // getSession lee la cookie sin ir a la red (rápido) y refresca el token si venció.
+  // Aquí solo se decide la redirección; la verificación real (getUser + rol) está en requireStaff().
   const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    data: { session },
+  } = await supabase.auth.getSession();
+  const user = session?.user ?? null;
 
   const { pathname } = request.nextUrl;
   if (!user && pathname.startsWith("/dashboard")) {

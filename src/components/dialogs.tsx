@@ -4,6 +4,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { Field, FormDialog, SelectField, TextField, type Option } from "@/components/form-bits";
 import { createClientRecord, createDeliverable, createMetric, createProspect } from "@/lib/actions/crm";
+import { createContentItem } from "@/lib/actions/content";
 import { createMeeting } from "@/lib/actions/meetings";
 import { convertToClient } from "@/lib/actions/onboarding";
 import { SERVICES } from "@/lib/crm";
@@ -89,6 +90,36 @@ export function ConvertToClientDialog({ prospectId, company }: { prospectId: str
           <input type="hidden" name="prospect_id" value={prospectId} />
           <SelectField label="Servicio" name="service" options={SERVICES.map((v) => ({ value: v, label: v }))} state={s} />
           <TextField label="Precio acordado (S/)" name="price_pen" type="number" min="0" step="1" defaultValue="0" state={s} />
+        </>
+      )}
+    </FormDialog>
+  );
+}
+
+export function NewContentDialog({ clients, defaultClient }: { clients: Option[]; defaultClient?: string }) {
+  return (
+    <FormDialog
+      title="Nuevo contenido"
+      description="Queda como borrador hasta que una persona lo apruebe."
+      trigger="Nuevo contenido"
+      action={createContentItem}
+      successMessage="Contenido guardado"
+    >
+      {(s) => (
+        <>
+          <SelectField label="Cliente" name="client_id" options={clients} defaultValue={defaultClient} state={s} />
+          <div className="grid grid-cols-2 gap-3">
+            <TextField label="Pilar" name="pillar" state={s} />
+            <TextField label="Formato" name="format" placeholder="Reel, post, story…" state={s} />
+            <TextField label="Fecha programada" name="scheduled_for" type="date" state={s} />
+            <TextField label="Métrica" name="metric" state={s} />
+          </div>
+          <TextField label="Objetivo" name="objective" state={s} />
+          <TextField label="Hook" name="hook" state={s} />
+          <Field label="Copy" name="copy">
+            <Textarea id="copy" name="copy" rows={3} />
+          </Field>
+          <TextField label="CTA" name="cta" state={s} />
         </>
       )}
     </FormDialog>
