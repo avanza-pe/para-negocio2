@@ -6,6 +6,7 @@ import { Field, FormDialog, SelectField, TextField, type Option } from "@/compon
 import { createClientRecord, createDeliverable, createMetric, createProspect } from "@/lib/actions/crm";
 import { createContentItem } from "@/lib/actions/content";
 import { createMeeting } from "@/lib/actions/meetings";
+import { generateReport } from "@/lib/actions/reports";
 import { convertToClient } from "@/lib/actions/onboarding";
 import { SERVICES } from "@/lib/crm";
 
@@ -120,6 +121,25 @@ export function NewContentDialog({ clients, defaultClient }: { clients: Option[]
             <Textarea id="copy" name="copy" rows={3} />
           </Field>
           <TextField label="CTA" name="cta" state={s} />
+        </>
+      )}
+    </FormDialog>
+  );
+}
+
+export function NewReportDialog({ clients }: { clients: Option[] }) {
+  return (
+    <FormDialog
+      title="Generar borrador"
+      description="Se arma con las métricas registradas del mes. Lo que falte queda como «sin dato»."
+      trigger="Generar reporte"
+      action={generateReport}
+      successMessage="Borrador generado"
+    >
+      {(s) => (
+        <>
+          <SelectField label="Cliente" name="client_id" options={clients} state={s} />
+          <TextField label="Mes" name="period" type="month" required state={s} />
         </>
       )}
     </FormDialog>

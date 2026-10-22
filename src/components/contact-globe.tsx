@@ -22,7 +22,7 @@ export function ContactGlobe() {
           Cuéntanos sobre tu negocio y te respondemos con una propuesta breve adaptada a tu marca.
         </p>
         <div className="relative mx-auto mt-8 max-w-xs text-foreground sm:max-w-sm lg:mx-0">
-          <div aria-hidden className="absolute inset-6 -z-10 rounded-full bg-[radial-gradient(closest-side,#2563eb44,transparent)] blur-2xl" />
+          <div aria-hidden className="absolute inset-6 -z-10 rounded-full bg-[radial-gradient(closest-side,#7c5cf244,transparent)] blur-2xl" />
           <Globe />
         </div>
         <ul className="mt-8 grid gap-4 sm:grid-cols-2">

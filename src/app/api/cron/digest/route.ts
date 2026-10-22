@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { Resend } from "resend";
+import { sendMail } from "@/lib/mail";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getToday, todayCount } from "@/lib/today";
 
@@ -16,17 +16,16 @@ export async function GET(request: NextRequest) {
   const db = createAdminClient();
   const t = await getToday(db);
   const total = todayCount(t);
-  const { RESEND_API_KEY, NOTIFY_EMAIL_TO, NOTIFY_EMAIL_FROM } = process.env;
+  const to = process.env.NOTIFY_EMAIL_TO;
 
   let status: "ok" | "error" = "ok";
   let error: string | null = null;
 
-  if (total > 0 && RESEND_API_KEY && NOTIFY_EMAIL_TO) {
+  if (total > 0 && to) {
     const li = (items: string[]) => (items.length ? `<ul>${items.map((i) => `<li>${i}</li>`).join("")}</ul>` : "<p>—</p>");
     try {
-      await new Resend(RESEND_API_KEY).emails.send({
-        from: NOTIFY_EMAIL_FROM || "onboarding@resend.dev",
-        to: NOTIFY_EMAIL_TO,
+      await sendMail({
+        to,
         subject: `AVANZA · ${total} pendientes hoy`,
         html: [
           "<h2>Resumen del día</h2>",

@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { AutomationGraph } from "@/components/dash/automation-graph";
 import { PageHeader } from "@/components/page-header";
 import { requireStaff } from "@/lib/auth";
 import type { AutomationRun } from "@/lib/crm";
@@ -8,12 +9,12 @@ import type { AutomationRun } from "@/lib/crm";
 export const metadata = { title: "Automatizaciones" };
 
 const FLOWS = [
-  { id: "A", name: "Lead entrante", state: "Activa", detail: "Formulario web → prospecto en CRM → aviso por correo (si Resend está configurado)." },
-  { id: "B", name: "Reserva", state: "Manual", detail: "Registra la reunión a mano o conecta el webhook de tu agenda." },
-  { id: "C", name: "Onboarding", state: "Plantilla", detail: "Al marcar Ganado: carpeta, checklist y brief (ver docs/plantillas.md)." },
-  { id: "D", name: "Producción", state: "Semana 2", detail: "Brief completo → entregables + borrador de calendario con IA y aprobación humana." },
-  { id: "E", name: "Seguimiento", state: "Panel", detail: "El resumen muestra acciones vencidas. Sin mensajes automáticos no solicitados." },
-  { id: "F", name: "Reporte", state: "Semana 2", detail: "Borrador con métricas registradas; nunca se inventan datos." },
+  { id: "A", name: "Lead entrante", state: "Activa", detail: "Formulario web → prospecto en CRM → aviso por correo (si Brevo está configurado)." },
+  { id: "B", name: "Reserva", state: "Activa", detail: "Reuniones manuales o por webhook de Calendly (plan con webhooks)." },
+  { id: "C", name: "Onboarding", state: "Activa", detail: "Prospecto ganado → cliente, checklist y brief. Sin envíos automáticos." },
+  { id: "D", name: "Producción", state: "Activa", detail: "Brief → borrador de calendario con IA. Siempre aprobación humana." },
+  { id: "E", name: "Seguimiento", state: "Activa", detail: "Página Hoy y resumen diario por correo. Nunca escribe a prospectos." },
+  { id: "F", name: "Reporte", state: "Activa", detail: "Borrador con métricas registradas; nunca se inventan datos." },
 ];
 
 const variant = { ok: "secondary", error: "destructive", duplicado: "outline" } as const;
@@ -30,7 +31,8 @@ export default async function AutomationsPage() {
   return (
     <>
       <PageHeader title="Automatizaciones" description="Estado de los flujos A–F del informe y registro de ejecuciones." />
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <AutomationGraph />
+      <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {FLOWS.map((f) => (
           <Card key={f.id}>
             <CardHeader>

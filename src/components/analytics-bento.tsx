@@ -52,7 +52,7 @@ function useCountUp(target: number) {
   return v;
 }
 
-const COLORS = ["#22d3ee", "#3b82f6", "#a855f7", "#c026d3", "#14b8a6", "#f59e0b"];
+const COLORS = ["#22d3ee", "#7c6cf0", "#7c6cf0", "#c026d3", "#14b8a6", "#f59e0b"];
 
 export function AnalyticsBento({ data, sample = false, format = (n: number) => n.toLocaleString("es-PE") }: {
   data: BentoData;
@@ -95,8 +95,8 @@ export function AnalyticsBento({ data, sample = false, format = (n: number) => n
           <svg viewBox={`0 0 ${W} ${H}`} className="mt-4 w-full" role="img" aria-label={data.lineLabel}>
             <defs>
               <linearGradient id="bento-area" x1="0" x2="0" y1="0" y2="1">
-                <stop offset="0" stopColor="#3b82f6" stopOpacity="0.35" />
-                <stop offset="1" stopColor="#3b82f6" stopOpacity="0" />
+                <stop offset="0" stopColor="#7c6cf0" stopOpacity="0.35" />
+                <stop offset="1" stopColor="#7c6cf0" stopOpacity="0" />
               </linearGradient>
               <linearGradient id="bento-line" x1="0" x2="1">
                 <stop offset="0" stopColor="#22d3ee" />
@@ -106,7 +106,7 @@ export function AnalyticsBento({ data, sample = false, format = (n: number) => n
             <path d={`${path} L${W},${H} L0,${H} Z`} fill="url(#bento-area)" />
             <path d={path} fill="none" stroke="url(#bento-line)" strokeWidth="2.5" strokeLinecap="round" />
             <line x1={cx} x2={cx} y1="0" y2={H} stroke="currentColor" strokeOpacity="0.2" strokeDasharray="3 3" />
-            <circle cx={cx} cy={cy} r="4.5" fill="#fff" stroke="#3b82f6" strokeWidth="2" />
+            <circle cx={cx} cy={cy} r="4.5" fill="#fff" stroke="#7c6cf0" strokeWidth="2" />
           </svg>
           <label className="sr-only" htmlFor="bento-range">
             Elegir periodo
@@ -118,7 +118,7 @@ export function AnalyticsBento({ data, sample = false, format = (n: number) => n
             max={data.line.length - 1}
             value={safeIdx}
             onChange={(e) => setIdx(Number(e.target.value))}
-            className="mt-1 w-full accent-[#3b82f6]"
+            className="mt-1 w-full accent-[#7c6cf0]"
           />
         </div>
       </Card>
@@ -183,7 +183,7 @@ export function AnalyticsBento({ data, sample = false, format = (n: number) => n
                 strokeOpacity="0.15"
               />
             ))}
-            <polygon points={radarPts.map(([x, y]) => `${x},${y}`).join(" ")} fill="#3b82f6" fillOpacity="0.3" stroke="#3b82f6" strokeWidth="2" />
+            <polygon points={radarPts.map(([x, y]) => `${x},${y}`).join(" ")} fill="#7c6cf0" fillOpacity="0.3" stroke="#7c6cf0" strokeWidth="2" />
           </svg>
         </div>
       </Card>

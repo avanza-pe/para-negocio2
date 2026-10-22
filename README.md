@@ -9,7 +9,7 @@ Reemplaza Google Sheets + Make por una app propia: **landing + formulario → CR
 | UI | Tailwind CSS 4 + shadcn/ui (base-ui) + lucide + Recharts |
 | Base de datos y auth | Supabase (Postgres + Auth + RLS) |
 | Deploy | Vercel |
-| Avisos por correo | Resend (opcional) |
+| Avisos por correo | Brevo API (opcional) |
 | Validación | Zod en cada Server Action |
 
 ## Qué hace (mapeo con el informe)
@@ -40,7 +40,7 @@ npm run dev
 ### 2. Vercel
 1. Sube el repo a GitHub e impórtalo en [vercel.com/new](https://vercel.com/new) (framework: Next.js, sin cambios).
 2. En *Settings → Environment Variables* añade las mismas variables de `.env.example`.  
-   `SUPABASE_SERVICE_ROLE_KEY` y `RESEND_API_KEY` **sin** prefijo `NEXT_PUBLIC_`.
+   `SUPABASE_SERVICE_ROLE_KEY` y `BREVO_API_KEY` **sin** prefijo `NEXT_PUBLIC_`.
 3. Despliega. Dominio propio solo cuando haya clientes validados (informe §2).
 
 ### 3. Prueba de extremo a extremo (criterio de éxito §13)

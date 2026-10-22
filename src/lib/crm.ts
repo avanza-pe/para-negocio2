@@ -51,6 +51,12 @@ export const CONTENT_STATUS = [
   { value: "descartado", label: "Descartado" },
 ] as const;
 
+export const REPORT_STATUS = [
+  { value: "borrador", label: "Borrador" },
+  { value: "aprobado", label: "Aprobado" },
+  { value: "enviado", label: "Enviado" },
+] as const;
+
 export const SERVICES = [
   "Contenido Inicio",
   "Contenido + Reels",
