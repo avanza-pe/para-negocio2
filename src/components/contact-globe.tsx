@@ -5,7 +5,15 @@ import { LeadForm } from "@/components/lead-form";
 import { SITE, whatsappLink } from "@/lib/site";
 
 /** Sección "Contáctanos": globo + vías de contacto + formulario conectado al CRM (flujo A). */
-export function ContactGlobe() {
+export function ContactGlobe({
+  title = "Contáctanos",
+  text = "Cuéntanos sobre tu negocio y te respondemos con una propuesta breve adaptada a tu marca.",
+  form,
+}: {
+  title?: string;
+  text?: string;
+  form?: React.ComponentProps<typeof LeadForm>;
+}) {
   const wa = whatsappLink();
   const items = [
     SITE.contactEmail && { icon: Mail, label: "Correo", value: SITE.contactEmail, href: `mailto:${SITE.contactEmail}` },
@@ -17,10 +25,8 @@ export function ContactGlobe() {
   return (
     <div className="grid items-center gap-10 lg:grid-cols-2">
       <div>
-        <h2 className="text-3xl font-semibold sm:text-4xl">Contáctanos</h2>
-        <p className="mt-3 max-w-md text-muted-foreground">
-          Cuéntanos sobre tu negocio y te respondemos con una propuesta breve adaptada a tu marca.
-        </p>
+        <h2 className="text-3xl font-semibold sm:text-4xl">{title}</h2>
+        <p className="mt-3 max-w-md text-muted-foreground">{text}</p>
         <div className="relative mx-auto mt-8 max-w-xs text-foreground sm:max-w-sm lg:mx-0">
           <div aria-hidden className="absolute inset-6 -z-10 rounded-full bg-[radial-gradient(closest-side,#7c5cf244,transparent)] blur-2xl" />
           <Globe />
@@ -47,7 +53,7 @@ export function ContactGlobe() {
       </div>
       <Card className="rounded-3xl bg-card/80 shadow-2xl backdrop-blur">
         <CardContent>
-          <LeadForm />
+          <LeadForm {...form} />
         </CardContent>
       </Card>
     </div>

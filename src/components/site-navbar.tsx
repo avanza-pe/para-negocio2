@@ -51,11 +51,14 @@ export function SiteNavbar() {
           scrolled ? "bg-background/75 shadow-lg shadow-black/10 backdrop-blur-xl" : "bg-background/40 backdrop-blur-md",
         )}
       >
-        <Link href="/" aria-label="AVANZA, inicio">
+        <Link href="/" aria-label="Inicio">
           <Logo />
         </Link>
 
         <nav aria-label="Principal" className="hidden items-center gap-1 lg:flex">
+          <Link href="/restaurantes" className="rounded-full px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground">
+            Restaurantes
+          </Link>
           {LINKS.map((l) => (
             <Link
               key={l.id}
@@ -91,6 +94,9 @@ export function SiteNavbar() {
             <Logo />
           </SheetTitle>
           <nav className="mt-4 grid gap-1 px-2" aria-label="Menú móvil">
+            <Link href="/restaurantes" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2 text-base hover:bg-accent">
+              Restaurantes y cafeterías
+            </Link>
             {LINKS.map((l) => (
               <Link
                 key={l.id}

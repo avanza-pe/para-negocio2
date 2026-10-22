@@ -6,18 +6,19 @@ import { Textarea } from "@/components/ui/textarea";
 import { Field, SubmitButton, TextField } from "@/components/form-bits";
 import { submitLead } from "@/lib/actions/leads";
 
-export function LeadForm() {
+export function LeadForm({ interest, defaultSector, submitLabel = "Solicitar propuesta" }: { interest?: string; defaultSector?: string; submitLabel?: string }) {
   const [state, formAction, pending] = useActionState(submitLead, {});
 
   return (
     <form action={formAction} className="grid gap-4" noValidate>
+      {interest && <input type="hidden" name="interest" value={interest} />}
       <div className="grid gap-4 sm:grid-cols-2">
         <TextField label="Tu nombre" name="contact_name" autoComplete="name" required state={state} />
         <TextField label="Tu negocio" name="company" autoComplete="organization" required state={state} />
         <TextField label="Correo" name="contact_email" type="email" autoComplete="email" required state={state} />
         <TextField label="WhatsApp (opcional)" name="contact_phone" type="tel" autoComplete="tel" state={state} />
       </div>
-      <TextField label="Rubro (opcional)" name="sector" placeholder="Ej. restaurante, clínica, tienda…" state={state} />
+      <TextField label="Rubro (opcional)" name="sector" placeholder="Ej. restaurante, cafetería, tienda…" defaultValue={defaultSector} state={state} />
       <Field label="¿Qué quieres lograr? (opcional)" name="message" error={state.fieldErrors?.message}>
         <Textarea id="message" name="message" rows={3} maxLength={1000} />
       </Field>
@@ -54,7 +55,7 @@ export function LeadForm() {
         </p>
       )}
       <SubmitButton pending={pending} className="h-10 w-full sm:w-auto">
-        Solicitar propuesta
+        {submitLabel}
       </SubmitButton>
     </form>
   );

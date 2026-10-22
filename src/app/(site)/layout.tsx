@@ -20,7 +20,8 @@ export default function SiteLayout({ children }: LayoutProps<"/">) {
             <Logo className="text-foreground" />
             <p>© {new Date().getFullYear()} {SITE.name}. Lima, Perú.</p>
           </div>
-          <div className="flex gap-5">
+          <div className="flex flex-wrap gap-5">
+            <Link href="/restaurantes" className="hover:text-foreground">Restaurantes</Link>
             <Link href="/privacidad" className="hover:text-foreground">Privacidad</Link>
             <Link href="/condiciones" className="hover:text-foreground">Condiciones</Link>
             <Link href="/login" className="hover:text-foreground">Equipo</Link>

@@ -18,6 +18,8 @@ Reemplaza Google Sheets + Make por una app propia: **landing + formulario → CR
 - **§5 CRM** → tablas `prospects`, `clients`, `deliverables`, `metrics` y páginas del panel `/dashboard/*`. Pipeline: Nuevo → … → Ganado/Perdido → Seguimiento futuro, con próxima acción obligatoria.
 - **§6 Flujo A (lead entrante)** → `src/lib/actions/leads.ts`: valida, detecta duplicados por correo, guarda en CRM, registra la ejecución en `automation_runs` y avisa por correo.
 - **§6 Flujos B–F** → ver `/dashboard/automatizaciones` y `docs/`.
+- **Restaurantes y cafeterías** → `/restaurantes` (venta), `/m/<local>` (carta), `/panel/<token>` (dueño), `/dashboard/locales`.
+- **Cobros** → `/pagar/<token>` y `/dashboard/cobros` (Yape vía Mercado Pago, tarjeta, Yape/Plin directo).
 - **§11 Seguridad** → RLS en todas las tablas, service role solo en servidor, cabeceras HTTP, honeypot anti-bots, sin claves en el repo.
 
 ## Puesta en marcha
@@ -30,7 +32,7 @@ npm run dev
 
 ### 1. Supabase
 1. Crea un proyecto en [supabase.com](https://supabase.com) (plan gratuito).
-2. **SQL Editor** → pega y ejecuta `supabase/migrations/0001_init.sql`.
+2. **SQL Editor** → ejecuta **en orden** `supabase/migrations/0001_init.sql` … `0010_personas.sql`.
 3. **Project Settings → API**: copia `URL`, `anon key` y `service_role key` a `.env.local`.
 4. **Authentication → URL Configuration**: *Site URL* = tu URL de Vercel; en *Redirect URLs* añade `https://TU-DOMINIO/auth/confirm`.
 5. **Authentication → Email templates → Confirm signup**: cambia el enlace a  
@@ -70,7 +72,11 @@ docs/                 plantillas y guías operativas del informe
 - **Redirecciones seguras**: `next` solo acepta rutas `/dashboard*`.
 - **CI**: `.github/workflows/ci.yml` corre lint, tipos y build en cada PR.
 
-## Pendiente / siguiente semana (informe §14)
+## Pendiente
+- Ver `docs/plan-restaurantes-y-cobros.md` (cobros reales con Mercado Pago y verificación de Cal.com).
+- Guía de herramientas gratis y límites: `docs/apis-gratis.md`. Mercado: `docs/mercado-restaurantes.md`. Flujo: `docs/flujo-usuario.md`.
+
+## Historial (informe §14)
 - Flujo B: webhook de la agenda (Calendly) → tabla de reuniones.
 - Flujos C–F: onboarding automático, producción con IA (con aprobación humana), seguimiento y reportes.
 - Cambiar `SITE.contactEmail` y el nombre en `src/lib/site.ts`.

@@ -2,9 +2,10 @@
 
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { briefToText, generateContentItems } from "@/lib/ai";
+import { aiConfigured, briefToText, generateContentItems } from "@/lib/ai";
 import { requireStaff } from "@/lib/auth";
-import { CONTENT_STATUS, type ClientBrief } from "@/lib/crm";
+import { CONTENT_STATUS, type ClientBrief, type Persona } from "@/lib/crm";
+import { limaStartOfDayISO } from "@/lib/dates";
 import type { ActionState } from "./types";
 
 const refresh = () => revalidatePath("/dashboard", "layout");
@@ -15,26 +16,27 @@ export async function generateCalendar(clientId: string): Promise<ActionState> {
   const { supabase } = await requireStaff();
   const id = z.uuid().safeParse(clientId);
   if (!id.success) return { error: "Cliente no válido" };
-  if (!process.env.ANTHROPIC_API_KEY) return { error: "La generación con IA no está configurada. Usa «Copiar prompt»." };
+  if (!aiConfigured()) return { error: "La generación con IA no está configurada. Usa «Copiar prompt»." };
 
-  // Límite de gasto: máximo de generaciones por día (AI_DAILY_LIMIT, por defecto 5)
-  const since = new Date();
-  since.setHours(0, 0, 0, 0);
+  // Límite de uso: máximo de generaciones por día (AI_DAILY_LIMIT, por defecto 5), contado en hora de Lima.
   const { count } = await supabase
     .from("automation_runs")
     .select("id", { count: "exact", head: true })
     .eq("flow", "D_produccion")
-    .gte("created_at", since.toISOString());
+    .gte("created_at", limaStartOfDayISO());
   if ((count ?? 0) >= DAILY_LIMIT) return { error: `Límite diario de generaciones alcanzado (${DAILY_LIMIT}).` };
 
   const { data: client } = await supabase.from("clients").select("id, name, service").eq("id", id.data).single();
   if (!client) return { error: "No se encontró el cliente" };
-  const { data: brief } = await supabase.from("client_briefs").select("*").eq("client_id", id.data).maybeSingle();
+  const [{ data: brief }, { data: personas }] = await Promise.all([
+    supabase.from("client_briefs").select("*").eq("client_id", id.data).maybeSingle(),
+    supabase.from("client_personas").select("*").eq("client_id", id.data).order("created_at"),
+  ]);
   const b = brief as ClientBrief | null;
   if (!b || !(b.audience && b.offer)) return { error: "Completa al menos público y oferta en el brief antes de generar." };
 
   try {
-    const items = await generateContentItems(briefToText(client.name, client.service, b));
+    const items = await generateContentItems(briefToText(client.name, client.service, b, (personas ?? []) as Persona[]));
     const { error } = await supabase
       .from("content_items")
       .insert(items.map((it) => ({ ...it, client_id: client.id, ai_generated: true, status: "borrador" })));
@@ -45,7 +47,7 @@ export async function generateCalendar(clientId: string): Promise<ActionState> {
   } catch (e) {
     const msg = e instanceof Error ? e.message : "Error desconocido";
     await supabase.from("automation_runs").insert({ flow: "D_produccion", trigger: "botón manual", action: "generar calendario", status: "error", error: msg, ref_id: client.id });
-    return { error: "No se pudo generar el calendario. Intenta de nuevo o usa «Copiar prompt»." };
+    return { error: `No se pudo generar el calendario (${msg}). Intenta de nuevo o usa «Copiar prompt».` };
   }
 }
 

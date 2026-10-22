@@ -7,11 +7,14 @@ import { NewContentDialog } from "@/components/dialogs";
 import { InlineSelect } from "@/components/form-bits";
 import { PageHeader } from "@/components/page-header";
 import { CopyPromptButton, GenerateButton } from "@/components/production-actions";
-import { briefToText, fullPrompt } from "@/lib/ai";
+import { aiConfigured, aiProvider, briefToText, fullPrompt, PROVIDER_LABEL } from "@/lib/ai";
 import { deleteContentItem, setContentStatus } from "@/lib/actions/content";
 import { requireStaff } from "@/lib/auth";
-import { CONTENT_STATUS, type ClientBrief, type ContentItem } from "@/lib/crm";
+import { CONTENT_STATUS, type ClientBrief, type ContentItem, type Persona } from "@/lib/crm";
 import { cn } from "@/lib/utils";
+
+// Las acciones con IA pueden tardar (los planes gratis responden más lento).
+export const maxDuration = 120;
 
 export const metadata = { title: "Producción" };
 
@@ -26,7 +29,7 @@ export default async function ProductionPage({ searchParams }: PageProps<"/dashb
   let items: ContentItem[] = [];
   let prompt = "";
   if (selected) {
-    const [{ data }, { data: brief }] = await Promise.all([
+    const [{ data }, { data: brief }, { data: personas }] = await Promise.all([
       supabase
         .from("content_items")
         .select("*")
@@ -34,12 +37,14 @@ export default async function ProductionPage({ searchParams }: PageProps<"/dashb
         .order("scheduled_for", { ascending: true, nullsFirst: false })
         .order("created_at"),
       supabase.from("client_briefs").select("*").eq("client_id", selected.id).maybeSingle(),
+      supabase.from("client_personas").select("*").eq("client_id", selected.id).order("created_at"),
     ]);
     items = (data ?? []) as ContentItem[];
-    prompt = fullPrompt(briefToText(selected.name, selected.service, brief as ClientBrief | null));
+    prompt = fullPrompt(briefToText(selected.name, selected.service, brief as ClientBrief | null, (personas ?? []) as Persona[]));
   }
 
-  const aiEnabled = Boolean(process.env.ANTHROPIC_API_KEY);
+  const aiEnabled = aiConfigured();
+  const provider = aiProvider();
   const options = list.map((c) => ({ value: c.id, label: c.name }));
 
   return (
@@ -75,7 +80,9 @@ export default async function ProductionPage({ searchParams }: PageProps<"/dashb
             <div className="mb-4 flex flex-wrap items-center gap-2">
               <GenerateButton clientId={selected.id} enabled={aiEnabled} />
               <CopyPromptButton prompt={prompt} />
-              {!aiEnabled && <span className="text-xs text-muted-foreground">Generación automática desactivada (sin ANTHROPIC_API_KEY).</span>}
+              <span className="text-xs text-muted-foreground">
+                {provider ? `IA: ${PROVIDER_LABEL[provider.provider]} · ${provider.model}` : "Generación automática desactivada: configura GEMINI_API_KEY o GROQ_API_KEY (gratis) o usa «Copiar prompt»."}
+              </span>
             </div>
           )}
 

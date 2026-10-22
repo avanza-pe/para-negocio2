@@ -1,4 +1,5 @@
-import { ArrowRight, Bot, CalendarCheck, Clapperboard, LayoutTemplate, Megaphone, Palette, Play, ShieldCheck } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, Bot, CalendarCheck, Clapperboard, LayoutTemplate, Megaphone, Palette, Play, QrCode, ShieldCheck, UtensilsCrossed } from "lucide-react";
 import { BentoCard, BentoGrid } from "@/components/bento";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -111,6 +112,44 @@ export default function HomePage() {
               <p className="mt-1 text-sm text-muted-foreground">Una página clara y rápida que convierte visitas en conversaciones.</p>
             </BentoCard>
           </BentoGrid>
+        </Reveal>
+      </section>
+
+      {/* RESTAURANTES Y CAFETERÍAS */}
+      <section className="mx-auto max-w-6xl px-4 pb-24">
+        <Reveal>
+          <div className="grid items-center gap-8 rounded-[2rem] border bg-card/70 p-8 backdrop-blur md:grid-cols-[1.3fr_1fr] md:p-12">
+            <div>
+              <Badge variant="secondary" className="mb-4 gap-1.5 rounded-full">
+                <UtensilsCrossed className="size-3.5" /> Restaurantes y cafeterías
+              </Badge>
+              <h2 className="text-3xl font-semibold sm:text-4xl">Tu carta digital con pedidos por WhatsApp y reservas</h2>
+              <p className="mt-3 text-muted-foreground">
+                QR para mesas, pedidos ordenados con el total calculado, reservas con aviso al instante, Yape y reseñas en Google. Sin comisión por pedido.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Button className="rounded-full" nativeButton={false} render={<Link href="/restaurantes" />}>
+                  Ver cómo funciona <ArrowRight />
+                </Button>
+                <Button variant="outline" className="rounded-full" nativeButton={false} render={<a href="/m/demo" target="_blank" rel="noopener noreferrer" />}>
+                  <QrCode /> Probar la demo
+                </Button>
+              </div>
+            </div>
+            <ul aria-hidden className="grid gap-2 text-sm">
+              {[
+                ["Capuccino", "S/ 11.00"],
+                ["Pan con chicharrón", "S/ 18.00"],
+                ["Pie de limón", "Agotado"],
+              ].map(([n, p]) => (
+                <li key={n} className="flex items-center justify-between rounded-2xl border bg-background/70 px-4 py-3">
+                  <span>{n}</span>
+                  <span className={p === "Agotado" ? "text-destructive" : "tabular-nums text-muted-foreground"}>{p}</span>
+                </li>
+              ))}
+              <li className="rounded-2xl bg-primary px-4 py-3 text-center font-medium text-primary-foreground">Enviar pedido por WhatsApp · S/ 29.00</li>
+            </ul>
+          </div>
         </Reveal>
       </section>
 

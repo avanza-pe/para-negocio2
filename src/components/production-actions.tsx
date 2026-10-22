@@ -11,7 +11,7 @@ export function GenerateButton({ clientId, enabled }: { clientId: string; enable
   return (
     <Button
       disabled={pending || !enabled}
-      title={enabled ? undefined : "Configura ANTHROPIC_API_KEY para activar la generación"}
+      title={enabled ? undefined : "Configura una IA (Gemini o Groq son gratis) para activar la generación"}
       onClick={() =>
         start(async () => {
           const res = await generateCalendar(clientId);

@@ -48,3 +48,6 @@ export function monthStart(value: string) {
 /** Nombre del mes en español: "2026-10-01" → "octubre 2026". */
 export const monthLabel = (date: string) =>
   new Date(`${date.slice(0, 7)}-15T12:00:00Z`).toLocaleDateString("es-PE", { month: "long", year: "numeric", timeZone: "UTC" });
+
+/** Instante de hace `days` días en ISO (para filtros "últimos N días"). */
+export const daysAgoISO = (days: number) => new Date(Date.now() - days * 864e5).toISOString();

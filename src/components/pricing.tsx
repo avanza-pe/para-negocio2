@@ -6,6 +6,7 @@ import { Check } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import type { Package } from "@/lib/offer";
 import { PACKAGES } from "@/lib/site";
 
 const GROUPS = [
@@ -13,33 +14,35 @@ const GROUPS = [
   { id: "proyecto", label: "Por proyecto", match: (u: string) => u !== "al mes" },
 ] as const;
 
-export function Pricing() {
+export function Pricing({ packages = PACKAGES, grouped = true, cta = "/#contacto" }: { packages?: readonly Package[]; grouped?: boolean; cta?: string }) {
   const [group, setGroup] = React.useState<(typeof GROUPS)[number]["id"]>("mensual");
   const current = GROUPS.find((g) => g.id === group)!;
-  const plans = PACKAGES.filter((p) => current.match(p.unit));
+  const plans = grouped ? packages.filter((p) => current.match(p.unit)) : packages;
 
   return (
     <div>
-      <div role="tablist" aria-label="Tipo de plan" className="mx-auto flex w-fit rounded-full border bg-card/60 p-1 backdrop-blur">
-        {GROUPS.map((g) => (
-          <button
-            key={g.id}
-            role="tab"
-            aria-selected={group === g.id}
-            onClick={() => setGroup(g.id)}
-            className={cn(
-              "rounded-full px-5 py-1.5 text-sm transition-colors",
-              group === g.id ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground",
-            )}
-          >
-            {g.label}
-          </button>
-        ))}
-      </div>
+      {grouped && (
+        <div role="tablist" aria-label="Tipo de plan" className="mx-auto flex w-fit rounded-full border bg-card/60 p-1 backdrop-blur">
+          {GROUPS.map((g) => (
+            <button
+              key={g.id}
+              role="tab"
+              aria-selected={group === g.id}
+              onClick={() => setGroup(g.id)}
+              className={cn(
+                "rounded-full px-5 py-1.5 text-sm transition-colors",
+                group === g.id ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground",
+              )}
+            >
+              {g.label}
+            </button>
+          ))}
+        </div>
+      )}
 
       <div className={cn("mx-auto mt-10 grid gap-5", plans.length === 2 ? "max-w-3xl md:grid-cols-2" : "md:grid-cols-3")}>
         {plans.map((p) => {
-          const featured = "featured" in p && p.featured;
+          const featured = Boolean(p.featured);
           return (
             <div
               key={p.name}
@@ -55,6 +58,7 @@ export function Pricing() {
                   <span className="font-heading text-4xl font-semibold">{p.price}</span>
                   <span className="text-sm text-muted-foreground">{p.unit}</span>
                 </p>
+                {p.note && <p className="mt-1 text-xs text-muted-foreground">{p.note}</p>}
               </div>
               <ul className="grid gap-2.5 text-sm">
                 {p.items.map((it) => (
@@ -70,7 +74,7 @@ export function Pricing() {
                 variant={featured ? "default" : "outline"}
                 className="mt-auto h-10 w-full rounded-full"
                 nativeButton={false}
-                render={<Link href="/#contacto" />}
+                render={<Link href={cta} />}
               >
                 Quiero este plan
               </Button>
