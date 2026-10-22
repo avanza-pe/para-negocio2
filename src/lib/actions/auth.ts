@@ -1,5 +1,6 @@
 "use server";
 
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
@@ -10,6 +11,15 @@ const credentials = z.object({
   email: z.string().trim().toLowerCase().email("Correo no válido"),
   password: z.string().min(8, "Mínimo 8 caracteres").max(72),
 });
+
+// Origen real de la petición (funciona en local, en Vercel y en previews sin depender de una variable).
+async function currentOrigin() {
+  const h = await headers();
+  const host = h.get("x-forwarded-host") ?? h.get("host");
+  if (!host) return publicEnv.NEXT_PUBLIC_SITE_URL;
+  const proto = h.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
+  return `${proto}://${host}`;
+}
 
 // Solo rutas internas, para evitar open-redirect.
 const safeNext = (v: FormDataEntryValue | null) =>
@@ -37,7 +47,7 @@ export async function signup(_: ActionState, formData: FormData): Promise<Action
     password: parsed.data.password,
     options: {
       data: { full_name: parsed.data.full_name },
-      emailRedirectTo: `${publicEnv.NEXT_PUBLIC_SITE_URL}/auth/confirm`,
+      emailRedirectTo: `${await currentOrigin()}/auth/confirm`,
     },
   });
   if (error) return { error: "No se pudo crear la cuenta. Intenta con otro correo." };
@@ -49,7 +59,7 @@ export async function signInWithGoogle() {
   const supabase = await createClient();
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
-    options: { redirectTo: `${publicEnv.NEXT_PUBLIC_SITE_URL}/auth/callback` },
+    options: { redirectTo: `${await currentOrigin()}/auth/callback` },
   });
   if (error || !data.url) redirect("/login?error=google");
   redirect(data.url);
