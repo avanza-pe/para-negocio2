@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ExternalLink } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -50,7 +51,9 @@ export default async function ClientsPage() {
             {rows.map((c) => (
               <TableRow key={c.id}>
                 <TableCell>
-                  <div className="font-medium">{c.name}</div>
+                  <Link href={`/dashboard/clientes/${c.id}`} className="font-medium underline-offset-2 hover:underline">
+                    {c.name}
+                  </Link>
                   <div className="text-xs text-muted-foreground">{c.contact}</div>
                 </TableCell>
                 <TableCell>{c.service}</TableCell>

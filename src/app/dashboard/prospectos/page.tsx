@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ProspectBoard } from "@/components/prospect-board";
-import { NewProspectDialog } from "@/components/dialogs";
+import { ConvertToClientDialog, NewProspectDialog } from "@/components/dialogs";
 import { InlineSelect } from "@/components/form-bits";
 import { PageHeader } from "@/components/page-header";
 import { deleteProspect, setProspectStage } from "@/lib/actions/crm";
@@ -23,6 +23,8 @@ export default async function ProspectsPage() {
     .limit(500)
     .overrideTypes<Prospect[]>();
   const rows = data ?? [];
+  const { data: linked } = await supabase.from("clients").select("prospect_id").not("prospect_id", "is", null);
+  const converted = new Set((linked ?? []).map((c) => c.prospect_id as string));
   const today = new Date().toISOString().slice(0, 10);
 
   return (
@@ -36,7 +38,7 @@ export default async function ProspectsPage() {
           <TabsTrigger value="tabla">Tabla</TabsTrigger>
         </TabsList>
         <TabsContent value="tablero">
-          <ProspectBoard prospects={rows} />
+          <ProspectBoard prospects={rows} converted={converted} />
         </TabsContent>
         <TabsContent value="tabla">
       <Card className="overflow-x-auto p-0">
@@ -91,6 +93,7 @@ export default async function ProspectsPage() {
                     ) : null}
                   </TableCell>
                   <TableCell>
+                    {p.stage === "ganado" && !converted.has(p.id) && <ConvertToClientDialog prospectId={p.id} company={p.company} />}
                     <form action={deleteProspect.bind(null, p.id)}>
                       <Button type="submit" variant="ghost" size="icon-sm" aria-label={`Eliminar ${p.company}`}>
                         <Trash2 />

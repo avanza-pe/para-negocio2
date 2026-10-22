@@ -24,6 +24,25 @@ export const PAYMENT_STATUS = [
   { value: "vencido", label: "Vencido" },
 ] as const;
 
+export const MEETING_STATUS = [
+  { value: "programada", label: "Programada" },
+  { value: "realizada", label: "Realizada" },
+  { value: "cancelada", label: "Cancelada" },
+  { value: "no_asistio", label: "No asistió" },
+] as const;
+
+/** Checklist de onboarding (flujo C). Nada se envía solo: cada punto lo marca una persona. */
+export const ONBOARDING_CHECKLIST = [
+  "Confirmar el primer pago (transferencia, Yape o Plin)",
+  "Crear carpeta del cliente en Drive desde la plantilla",
+  "Enviar el brief al cliente y completarlo aquí",
+  "Pedir accesos con permisos mínimos (nunca contraseñas personales)",
+  "Revisar a mano cualquier contrato o promesa antes de enviarlo",
+  "Agendar la reunión de arranque",
+  "Definir los 3 pilares de contenido",
+  "Crear las primeras entregas en el panel",
+] as const;
+
 export const SERVICES = [
   "Contenido Inicio",
   "Contenido + Reels",
@@ -52,6 +71,33 @@ export type Prospect = {
   notes: string | null;
   message: string | null;
   created_at: string;
+};
+
+export type Meeting = {
+  id: string;
+  prospect_id: string;
+  starts_at: string;
+  status: string;
+  source: string;
+  notes: string | null;
+  prospects?: { company: string; contact_name: string | null } | null;
+};
+
+export type OnboardingTask = { id: string; title: string; done: boolean; position: number };
+
+export type ClientBrief = {
+  client_id: string;
+  sector: string | null;
+  audience: string | null;
+  offer: string | null;
+  tone: string | null;
+  differentiators: string | null;
+  location: string | null;
+  cta: string | null;
+  references_text: string | null;
+  restrictions: string | null;
+  approver: string | null;
+  access_notes: string | null;
 };
 
 export type Client = {

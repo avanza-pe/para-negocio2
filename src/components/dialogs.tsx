@@ -4,6 +4,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { Field, FormDialog, SelectField, TextField, type Option } from "@/components/form-bits";
 import { createClientRecord, createDeliverable, createMetric, createProspect } from "@/lib/actions/crm";
+import { createMeeting } from "@/lib/actions/meetings";
+import { convertToClient } from "@/lib/actions/onboarding";
 import { SERVICES } from "@/lib/crm";
 
 const CHANNELS: Option[] = [
@@ -46,6 +48,47 @@ export function NewProspectDialog() {
           <label className="flex items-center gap-2 text-sm">
             <Checkbox name="consent" /> Hay base legal / consentimiento para contactarlo
           </label>
+        </>
+      )}
+    </FormDialog>
+  );
+}
+
+export function NewMeetingDialog({ prospects }: { prospects: Option[] }) {
+  return (
+    <FormDialog
+      title="Nueva reunión"
+      description="Hora de Lima. El prospecto pasa a Reunión agendada."
+      trigger="Nueva reunión"
+      action={createMeeting}
+      successMessage="Reunión guardada"
+    >
+      {(s) => (
+        <>
+          <SelectField label="Prospecto" name="prospect_id" options={prospects} state={s} />
+          <TextField label="Fecha y hora" name="starts_at" type="datetime-local" required state={s} />
+          <TextField label="Notas" name="notes" state={s} />
+        </>
+      )}
+    </FormDialog>
+  );
+}
+
+export function ConvertToClientDialog({ prospectId, company }: { prospectId: string; company: string }) {
+  return (
+    <FormDialog
+      title={`Convertir en cliente: ${company}`}
+      description="Crea el cliente, su checklist de onboarding y un brief vacío. No envía nada al cliente."
+      trigger="Convertir en cliente"
+      action={convertToClient}
+      successMessage="Cliente creado"
+      compact
+    >
+      {(s) => (
+        <>
+          <input type="hidden" name="prospect_id" value={prospectId} />
+          <SelectField label="Servicio" name="service" options={SERVICES.map((v) => ({ value: v, label: v }))} state={s} />
+          <TextField label="Precio acordado (S/)" name="price_pen" type="number" min="0" step="1" defaultValue="0" state={s} />
         </>
       )}
     </FormDialog>

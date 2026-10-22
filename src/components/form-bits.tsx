@@ -122,6 +122,7 @@ export function FormDialog({
   trigger,
   action,
   successMessage,
+  compact = false,
   children,
 }: {
   title: string;
@@ -129,6 +130,7 @@ export function FormDialog({
   trigger: string;
   action: (state: ActionState, formData: FormData) => Promise<ActionState>;
   successMessage: string;
+  compact?: boolean;
   children: (state: ActionState) => React.ReactNode;
 }) {
   const [open, setOpen] = React.useState(false);
@@ -145,8 +147,8 @@ export function FormDialog({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger render={<Button />}>
-        <Plus /> {trigger}
+      <DialogTrigger render={<Button size={compact ? "sm" : "default"} variant={compact ? "outline" : "default"} />}>
+        {!compact && <Plus />} {trigger}
       </DialogTrigger>
       <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg">
         <DialogHeader>

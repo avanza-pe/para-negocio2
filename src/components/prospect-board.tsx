@@ -1,5 +1,6 @@
 import { Mail, Phone } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { ConvertToClientDialog } from "@/components/dialogs";
 import { InlineSelect } from "@/components/form-bits";
 import { setProspectStage } from "@/lib/actions/crm";
 import { STAGES, type Prospect } from "@/lib/crm";
@@ -17,7 +18,7 @@ const COLUMN_TONE: Record<string, string> = {
 };
 
 /** Tablero por etapas. Mover una tarjeta = cambiar su etapa con el selector. */
-export function ProspectBoard({ prospects }: { prospects: Prospect[] }) {
+export function ProspectBoard({ prospects, converted }: { prospects: Prospect[]; converted: Set<string> }) {
   const today = new Date().toISOString().slice(0, 10);
   return (
     <div className="flex gap-3 overflow-x-auto pb-3">
@@ -59,6 +60,11 @@ export function ProspectBoard({ prospects }: { prospects: Prospect[] }) {
                         {p.next_action}
                         {p.next_action_at && ` · ${p.next_action_at}`}
                       </p>
+                    )}
+                    {p.stage === "ganado" && !converted.has(p.id) && (
+                      <div className="mt-2">
+                        <ConvertToClientDialog prospectId={p.id} company={p.company} />
+                      </div>
                     )}
                     <InlineSelect id={p.id} value={p.stage} options={STAGES} action={setProspectStage} className="mt-2 w-full" />
                   </li>

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Bot, FolderKanban, LayoutDashboard, LineChart, LogOut, Target, Users } from "lucide-react";
+import { Bot, CalendarClock, FolderKanban, LayoutDashboard, LineChart, LogOut, Target, Users } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -20,6 +20,7 @@ import { logout } from "@/lib/actions/auth";
 const NAV = [
   { href: "/dashboard", label: "Resumen", icon: LayoutDashboard },
   { href: "/dashboard/prospectos", label: "Prospectos", icon: Target },
+  { href: "/dashboard/reuniones", label: "Reuniones", icon: CalendarClock },
   { href: "/dashboard/clientes", label: "Clientes", icon: Users },
   { href: "/dashboard/entregas", label: "Entregas", icon: FolderKanban },
   { href: "/dashboard/metricas", label: "Métricas", icon: LineChart },
