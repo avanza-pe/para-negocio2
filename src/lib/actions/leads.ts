@@ -3,6 +3,8 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { limaDate } from "@/lib/dates";
+import { normalizePhone } from "@/lib/phone";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { notifyNewLead } from "@/lib/notify";
 import type { ActionState } from "./types";
@@ -14,6 +16,7 @@ const leadSchema = z.object({
   contact_phone: z.string().trim().max(30).optional(),
   sector: z.string().trim().max(80).optional(),
   message: z.string().trim().max(1000).optional(),
+  interest: z.string().trim().max(60).optional(), // página de origen, ej. "Carta digital (restaurantes)"
   consent: z.literal("on", { error: "Debes aceptar la política de privacidad" }),
   website: z.string().max(0).optional(), // honeypot: los bots lo llenan
 });
@@ -57,31 +60,36 @@ export async function submitLead(_: ActionState, formData: FormData): Promise<Ac
       company: lead.company,
       contact_name: lead.contact_name,
       contact_email: lead.contact_email,
-      contact_phone: lead.contact_phone || null,
+      contact_phone: normalizePhone(lead.contact_phone),
       sector: lead.sector || null,
       message: lead.message || null,
+      notes: lead.interest ? `Interés: ${lead.interest}` : null,
       channel: "web",
       stage: "nuevo",
       consent: true,
       next_action: "Responder consulta y ofrecer diagnóstico de 15 min",
-      next_action_at: new Date().toISOString().slice(0, 10),
+      next_action_at: limaDate(),
+      last_interaction_at: new Date().toISOString(),
     })
     .select("id")
     .single();
 
   if (error) {
     const duplicate = error.code === "23505";
+    // Un duplicado no es error para quien escribe: ya tenemos su contacto. Se reactiva el prospecto
+    // existente (próxima acción hoy + mensaje nuevo en notas) para que nadie quede sin respuesta.
+    if (duplicate) await reactivateProspect(db, lead.contact_email, lead.message);
     await db.from("automation_runs").insert({
       flow: "A_lead_entrante",
       trigger: "formulario web",
-      action: "insertar prospecto",
+      action: duplicate ? "lead repetido: reactivar prospecto + aviso" : "insertar prospecto",
       status: duplicate ? "duplicado" : "error",
       error: duplicate ? null : error.message,
     });
-    // Un duplicado no es error para quien escribe: ya tenemos su contacto.
     if (!duplicate) {
       return { error: "No pudimos enviar tu consulta. Intenta de nuevo o escríbenos por WhatsApp." };
     }
+    await notifyNewLead(lead, { repeated: true }).catch(() => {});
   } else {
     await db.from("automation_runs").insert({
       flow: "A_lead_entrante",
@@ -90,7 +98,24 @@ export async function submitLead(_: ActionState, formData: FormData): Promise<Ac
       status: "ok",
       ref_id: data.id,
     });
-    await notifyNewLead({ ...lead, message: lead.message }).catch(() => {});
+    await notifyNewLead(lead).catch(() => {});
   }
   redirect("/gracias");
+}
+
+async function reactivateProspect(db: ReturnType<typeof createAdminClient>, email: string, message?: string) {
+  const { data: existing } = await db.from("prospects").select("id, stage, notes").eq("contact_email", email).maybeSingle();
+  if (!existing) return;
+  const stamp = `[${limaDate()}] Volvió a escribir por la web${message ? `: ${message}` : ""}`;
+  await db
+    .from("prospects")
+    .update({
+      next_action: "Volvió a escribir: responder hoy",
+      next_action_at: limaDate(),
+      last_interaction_at: new Date().toISOString(),
+      notes: [existing.notes, stamp].filter(Boolean).join("\n").slice(-4000),
+      // Si estaba perdido o en pausa, vuelve al pipeline activo.
+      ...(["perdido", "seguimiento_futuro"].includes(existing.stage) ? { stage: "respondio" } : {}),
+    })
+    .eq("id", existing.id);
 }

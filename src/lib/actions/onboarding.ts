@@ -4,7 +4,8 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { requireStaff } from "@/lib/auth";
-import { ONBOARDING_CHECKLIST } from "@/lib/crm";
+import { GASTRO_ONBOARDING, ONBOARDING_CHECKLIST, isGastro } from "@/lib/crm";
+import { addMonths, limaDate } from "@/lib/dates";
 import type { ActionState } from "./types";
 
 const convertSchema = z.object({
@@ -21,25 +22,26 @@ export async function convertToClient(_: ActionState, formData: FormData): Promi
 
   const { data: prospect } = await supabase
     .from("prospects")
-    .select("id, company, contact_name, contact_email, sector, stage")
+    .select("id, company, contact_name, contact_email, contact_phone, sector, stage")
     .eq("id", parsed.data.prospect_id)
     .single();
   if (!prospect) return { error: "No se encontró el prospecto" };
 
-  const today = new Date();
-  const renewal = new Date(today);
-  renewal.setMonth(renewal.getMonth() + 1);
+  const today = limaDate();
 
   const { data: client, error } = await supabase
     .from("clients")
     .insert({
       prospect_id: prospect.id,
       name: prospect.company,
-      contact: [prospect.contact_name, prospect.contact_email].filter(Boolean).join(" · ") || null,
+      contact: prospect.contact_name,
+      contact_email: prospect.contact_email,
+      contact_phone: prospect.contact_phone,
+      sector: prospect.sector,
       service: parsed.data.service,
       price_pen: parsed.data.price_pen,
-      start_date: today.toISOString().slice(0, 10),
-      renewal_date: renewal.toISOString().slice(0, 10),
+      start_date: today,
+      renewal_date: addMonths(today, 1),
     })
     .select("id")
     .single();
@@ -47,9 +49,8 @@ export async function convertToClient(_: ActionState, formData: FormData): Promi
     return { error: error?.code === "23505" ? "Este prospecto ya es cliente" : "No se pudo crear el cliente" };
   }
 
-  await supabase
-    .from("onboarding_tasks")
-    .insert(ONBOARDING_CHECKLIST.map((title, position) => ({ client_id: client.id, title, position })));
+  const checklist = [...ONBOARDING_CHECKLIST, ...(isGastro(prospect.sector, parsed.data.service) ? GASTRO_ONBOARDING : [])];
+  await supabase.from("onboarding_tasks").insert(checklist.map((title, position) => ({ client_id: client.id, title, position })));
   await supabase.from("client_briefs").insert({ client_id: client.id, sector: prospect.sector });
   await supabase.from("prospects").update({ stage: "ganado", next_action: null, next_action_at: null }).eq("id", prospect.id);
   await supabase.from("automation_runs").insert({

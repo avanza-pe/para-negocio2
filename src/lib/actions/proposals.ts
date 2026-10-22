@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { requireStaff } from "@/lib/auth";
 import { PROPOSAL_STATUS } from "@/lib/crm";
-import { PACKAGES } from "@/lib/site";
+import { findPackage } from "@/lib/offer";
 import type { ActionState } from "./types";
 
 const refresh = () => revalidatePath("/dashboard", "layout");
@@ -20,8 +20,7 @@ const schema = z.object({
   notes: z.string().trim().max(800).optional().transform((v) => v || null),
 });
 
-// El paquete elegido trae su alcance desde la oferta (src/lib/site.ts). La propuesta puede editarse en BD si hace falta.
-const findPackage = (name: string) => PACKAGES.find((p) => name.toLowerCase().startsWith(p.name.toLowerCase().split(" ")[0]) && name.toLowerCase().includes(p.name.toLowerCase().split(" ").slice(-1)[0]));
+// El paquete elegido trae su alcance desde la oferta (src/lib/offer.ts).
 
 /** Crea un borrador de propuesta desde la plantilla del informe. Nada se envía: se imprime/comparte a mano. */
 export async function createProposal(_: ActionState, formData: FormData): Promise<ActionState> {
@@ -32,8 +31,8 @@ export async function createProposal(_: ActionState, formData: FormData): Promis
   const { data: prospect } = await supabase.from("prospects").select("company").eq("id", parsed.data.prospect_id).single();
   if (!prospect) return { error: "No se encontró el prospecto" };
 
-  const pkg = findPackage(parsed.data.package) ?? PACKAGES.find((p) => p.name === parsed.data.package);
-  const includes = pkg ? pkg.items.join("\n") : "A definir con el cliente [POR CONFIRMAR]";
+  const pkg = findPackage(parsed.data.package);
+  const includes = pkg ? [...pkg.items, ...(pkg.note ? [`Nota de precio: ${pkg.note}`] : [])].join("\n") : "A definir con el cliente [POR CONFIRMAR]";
 
   const { data, error } = await supabase
     .from("proposals")
@@ -50,7 +49,7 @@ export async function createProposal(_: ActionState, formData: FormData): Promis
       client_materials: "Logo, colores de marca, fotos/videos propios y accesos con permisos mínimos (nunca contraseñas personales).",
       revisions: parsed.data.revisions,
       timeline: parsed.data.timeline,
-      payment_terms: "Transferencia bancaria, Yape o Plin. El trabajo inicia al confirmarse el primer pago.",
+      payment_terms: "Enlace de pago con Yape o tarjeta (Mercado Pago), Yape/Plin directo o transferencia bancaria. El trabajo inicia al confirmarse el primer pago.",
       notes: parsed.data.notes,
     })
     .select("id")

@@ -43,6 +43,21 @@ export const ONBOARDING_CHECKLIST = [
   "Crear las primeras entregas en el panel",
 ] as const;
 
+/** Pasos extra cuando el cliente es un restaurante, cafetería o similar. */
+export const GASTRO_ONBOARDING = [
+  "Recibir la carta actual con precios (foto o PDF) y cargarla en Locales",
+  "Confirmar WhatsApp de pedidos, horarios, delivery y número de Yape",
+  "Pedir el enlace de reseñas de Google (Perfil de empresa → Pedir reseñas)",
+  "Publicar la carta, imprimir el QR para mesas y probar un pedido de punta a punta",
+  "Enviar al dueño su enlace privado del panel (reservas y «agotado»)",
+] as const;
+
+const GASTRO_RE = /(restaurant|caf[eé]|pasteler|panader|\bbar\b|jugu|poller|cevicher|chifa|pizzer|sangu|brasa|dark kitchen|comida)/i;
+/** ¿Es un negocio gastronómico? (por rubro libre o por el servicio contratado) */
+export const isGastro = (sector: string | null | undefined, service?: string | null) =>
+  ["Carta digital", "Restaurante Pro", "Google y reseñas"].includes(service ?? "") ||
+  GASTRO_RE.test(sector ?? "");
+
 export const CONTENT_STATUS = [
   { value: "borrador", label: "Borrador" },
   { value: "en_revision", label: "En revisión" },
@@ -84,13 +99,7 @@ export type Proposal = {
   created_at: string;
 };
 
-export const SERVICES = [
-  "Contenido Inicio",
-  "Contenido + Reels",
-  "Campaña creativa puntual",
-  "Automatización básica",
-  "Landing comercial",
-] as const;
+export { SERVICES } from "@/lib/offer";
 
 export const label = (list: readonly { value: string; label: string }[], v: string) =>
   list.find((i) => i.value === v)?.label ?? v;
@@ -111,6 +120,8 @@ export type Prospect = {
   consent: boolean;
   notes: string | null;
   message: string | null;
+  lost_reason: string | null;
+  last_interaction_at: string | null;
   created_at: string;
 };
 
@@ -161,6 +172,9 @@ export type Client = {
   id: string;
   name: string;
   contact: string | null;
+  contact_email: string | null;
+  contact_phone: string | null;
+  sector: string | null;
   service: string;
   price_pen: number;
   start_date: string | null;
@@ -204,4 +218,158 @@ export type AutomationRun = {
   status: string;
   error: string | null;
   created_at: string;
+};
+
+/** Canales de origen de un prospecto. */
+export const CHANNELS = [
+  { value: "manual", label: "Manual" },
+  { value: "instagram", label: "Instagram" },
+  { value: "tiktok", label: "TikTok" },
+  { value: "whatsapp", label: "WhatsApp" },
+  { value: "google_maps", label: "Google Maps" },
+  { value: "visita", label: "Visita al local" },
+  { value: "linkedin", label: "LinkedIn" },
+  { value: "referido", label: "Referido" },
+  { value: "web", label: "Web" },
+  { value: "calendly", label: "Calendly" },
+  { value: "calcom", label: "Cal.com" },
+] as const;
+
+/** Rubros sugeridos (el foco comercial está en gastronomía). */
+export const SECTORS = ["Restaurante", "Cafetería", "Pastelería", "Bar", "Juguería", "Dark kitchen", "Pollería", "Cevichería", "Clínica", "Tienda", "Otro"] as const;
+
+// ───────── Cobros (flujo G) ─────────
+export const PAY_STATUS = [
+  { value: "pendiente", label: "Pendiente" },
+  { value: "pagado", label: "Pagado" },
+  { value: "rechazado", label: "Rechazado" },
+  { value: "cancelado", label: "Cancelado" },
+  { value: "reembolsado", label: "Reembolsado" },
+] as const;
+
+export const PAY_METHODS = [
+  { value: "yape_mp", label: "Yape (Mercado Pago)" },
+  { value: "mercadopago", label: "Mercado Pago" },
+  { value: "yape", label: "Yape directo" },
+  { value: "plin", label: "Plin" },
+  { value: "transferencia", label: "Transferencia" },
+  { value: "efectivo", label: "Efectivo" },
+  { value: "otro", label: "Otro" },
+] as const;
+
+/** Métodos que se registran a mano (el resto los confirma Mercado Pago). */
+export const MANUAL_PAY_METHODS = PAY_METHODS.filter((m) => !["yape_mp", "mercadopago"].includes(m.value));
+
+export type Payment = {
+  id: string;
+  client_id: string | null;
+  concept: string;
+  amount_pen: number;
+  period: string | null;
+  due_date: string | null;
+  status: string;
+  method: string | null;
+  payer_email: string | null;
+  public_token: string;
+  mp_payment_id: string | null;
+  mp_status: string | null;
+  mp_status_detail: string | null;
+  paid_at: string | null;
+  notes: string | null;
+  created_at: string;
+  clients?: { name: string; contact_phone: string | null } | null;
+};
+
+// ───────── Restaurantes y cafeterías ─────────
+export const VENUE_KINDS = [
+  { value: "restaurante", label: "Restaurante" },
+  { value: "cafeteria", label: "Cafetería" },
+  { value: "pasteleria", label: "Pastelería" },
+  { value: "bar", label: "Bar" },
+  { value: "juguera", label: "Juguería" },
+  { value: "dark_kitchen", label: "Dark kitchen" },
+  { value: "otro", label: "Otro" },
+] as const;
+
+export const RESERVATION_STATUS = [
+  { value: "pendiente", label: "Pendiente" },
+  { value: "confirmada", label: "Confirmada" },
+  { value: "cancelada", label: "Cancelada" },
+  { value: "asistio", label: "Asistió" },
+  { value: "no_asistio", label: "No asistió" },
+] as const;
+
+export const MENU_TAGS = ["Nuevo", "Recomendado", "Para compartir", "Vegano", "Vegetariano", "Sin gluten", "Picante", "Promo"] as const;
+
+export type Venue = {
+  id: string;
+  client_id: string | null;
+  slug: string;
+  name: string;
+  kind: string;
+  tagline: string | null;
+  whatsapp: string | null;
+  address: string | null;
+  district: string | null;
+  city: string;
+  maps_url: string | null;
+  hours_text: string | null;
+  instagram: string | null;
+  tiktok: string | null;
+  google_review_url: string | null;
+  yape_number: string | null;
+  yape_name: string | null;
+  accepts_orders: boolean;
+  accepts_reservations: boolean;
+  delivery_note: string | null;
+  accent_color: string;
+  published: boolean;
+  owner_token: string;
+  notify_email: string | null;
+  telegram_chat_id: string | null;
+  created_at: string;
+};
+
+/** Lo que ve el público (nunca incluye owner_token, correos ni chat de Telegram). */
+export type PublicVenue = Omit<Venue, "owner_token" | "notify_email" | "telegram_chat_id" | "client_id" | "published" | "created_at">;
+
+export type MenuCategory = { id: string; venue_id: string; name: string; position: number };
+
+export type MenuItem = {
+  id: string;
+  venue_id: string;
+  category_id: string;
+  name: string;
+  description: string | null;
+  price_pen: number;
+  available: boolean;
+  tags: string[];
+  position: number;
+  image_url: string | null;
+};
+
+export type Reservation = {
+  id: string;
+  venue_id: string;
+  name: string;
+  phone: string;
+  party_size: number;
+  reserved_for: string;
+  notes: string | null;
+  status: string;
+  source: string;
+  created_at: string;
+};
+
+export type Persona = {
+  id: string;
+  client_id: string;
+  name: string;
+  profile: string | null;
+  goals: string | null;
+  pains: string | null;
+  channels: string | null;
+  objections: string | null;
+  message: string | null;
+  ai_generated: boolean;
 };

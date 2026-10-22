@@ -1,7 +1,9 @@
 import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { NewMetricDialog } from "@/components/dialogs";
+import { DeleteButton } from "@/components/form-bits";
 import { PageHeader } from "@/components/page-header";
+import { deleteMetric } from "@/lib/actions/crm";
 import { requireStaff } from "@/lib/auth";
 import type { Metric } from "@/lib/crm";
 
@@ -19,7 +21,7 @@ export default async function MetricsPage() {
 
   return (
     <>
-      <PageHeader title="Métricas" description="Solo datos verificables. Nunca inventes métricas en un reporte.">
+      <PageHeader title="Métricas" description="Solo datos verificables, un registro por cliente y mes. Las cartas digitales pueden registrar las suyas solas (Locales → Estadísticas).">
         <NewMetricDialog clients={(clients ?? []).map((c) => ({ value: c.id, label: c.name }))} />
       </PageHeader>
       <Card className="overflow-x-auto p-0">
@@ -34,12 +36,13 @@ export default async function MetricsPage() {
               <TableHead>Clics</TableHead>
               <TableHead>Leads</TableHead>
               <TableHead>Fuente</TableHead>
+              <TableHead className="w-10" />
             </TableRow>
           </TableHeader>
           <TableBody>
             {rows.length === 0 && (
               <TableRow>
-                <TableCell colSpan={8} className="h-24 text-center text-muted-foreground">
+                <TableCell colSpan={9} className="h-24 text-center text-muted-foreground">
                   Sin métricas registradas.
                 </TableCell>
               </TableRow>
@@ -54,6 +57,9 @@ export default async function MetricsPage() {
                 <TableCell>{n(m.clicks)}</TableCell>
                 <TableCell>{n(m.leads)}</TableCell>
                 <TableCell>{m.source ?? "—"}</TableCell>
+                <TableCell>
+                  <DeleteButton action={deleteMetric.bind(null, m.id)} label="Eliminar registro" confirm="¿Eliminar este registro de métricas?" />
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

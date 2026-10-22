@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { toast } from "sonner";
-import { Loader2, Plus } from "lucide-react";
+import { Loader2, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -123,6 +123,8 @@ export function FormDialog({
   action,
   successMessage,
   compact = false,
+  icon,
+  submitLabel = "Guardar",
   children,
 }: {
   title: string;
@@ -131,6 +133,9 @@ export function FormDialog({
   action: (state: ActionState, formData: FormData) => Promise<ActionState>;
   successMessage: string;
   compact?: boolean;
+  /** Botón de solo ícono (p. ej. editar en una fila); `trigger` queda como aria-label. */
+  icon?: React.ReactNode;
+  submitLabel?: string;
   children: (state: ActionState) => React.ReactNode;
 }) {
   const [open, setOpen] = React.useState(false);
@@ -147,9 +152,13 @@ export function FormDialog({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger render={<Button size={compact ? "sm" : "default"} variant={compact ? "outline" : "default"} />}>
-        {!compact && <Plus />} {trigger}
-      </DialogTrigger>
+      {icon ? (
+        <DialogTrigger render={<Button size="icon-sm" variant="ghost" aria-label={trigger} title={trigger} />}>{icon}</DialogTrigger>
+      ) : (
+        <DialogTrigger render={<Button size={compact ? "sm" : "default"} variant={compact ? "outline" : "default"} />}>
+          {!compact && <Plus />} {trigger}
+        </DialogTrigger>
+      )}
       <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
@@ -162,7 +171,7 @@ export function FormDialog({
               {state.error}
             </p>
           )}
-          <SubmitButton pending={pending}>Guardar</SubmitButton>
+          <SubmitButton pending={pending}>{submitLabel}</SubmitButton>
         </form>
       </DialogContent>
     </Dialog>
@@ -204,5 +213,36 @@ export function InlineSelect({
         ))}
       </SelectContent>
     </Select>
+  );
+}
+
+/** Botón de borrar con confirmación. `action` es una Server Action ya ligada al id (action.bind(null, id)). */
+export function DeleteButton({ action, label, confirm }: { action: () => Promise<void>; label: string; confirm: string }) {
+  const [pending, startTransition] = React.useTransition();
+  return (
+    <Button
+      type="button"
+      variant="ghost"
+      size="icon-sm"
+      aria-label={label}
+      title={label}
+      disabled={pending}
+      onClick={() => {
+        if (window.confirm(confirm)) startTransition(() => action());
+      }}
+    >
+      {pending ? <Loader2 className="animate-spin" /> : <Trash2 />}
+    </Button>
+  );
+}
+
+/** Lista de sugerencias para un input de texto libre (rubros, formatos…). */
+export function Suggestions({ id, options }: { id: string; options: readonly string[] }) {
+  return (
+    <datalist id={id}>
+      {options.map((o) => (
+        <option key={o} value={o} />
+      ))}
+    </datalist>
   );
 }

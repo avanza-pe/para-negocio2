@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { requireStaff } from "@/lib/auth";
 import { MEETING_STATUS } from "@/lib/crm";
+import { limaDate, limaLocalToISO } from "@/lib/dates";
 import type { ActionState } from "./types";
 
 const meetingSchema = z.object({
@@ -18,13 +19,13 @@ export async function createMeeting(_: ActionState, formData: FormData): Promise
   const parsed = meetingSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) return { fieldErrors: z.flattenError(parsed.error).fieldErrors };
 
-  // El campo datetime-local no trae zona horaria: se interpreta como hora de Lima (UTC-5, sin horario de verano).
-  const startsAt = new Date(`${parsed.data.starts_at}:00-05:00`);
-  if (Number.isNaN(startsAt.getTime())) return { fieldErrors: { starts_at: ["Fecha no válida"] } };
+  // El campo datetime-local no trae zona horaria: se interpreta como hora de Lima.
+  const startsAt = limaLocalToISO(parsed.data.starts_at);
+  if (!startsAt) return { fieldErrors: { starts_at: ["Fecha no válida"] } };
 
   const { error } = await supabase.from("meetings").insert({
     prospect_id: parsed.data.prospect_id,
-    starts_at: startsAt.toISOString(),
+    starts_at: startsAt,
     notes: parsed.data.notes,
     source: "manual",
   });
@@ -36,7 +37,7 @@ export async function createMeeting(_: ActionState, formData: FormData): Promise
       stage: "reunion_agendada",
       last_interaction_at: new Date().toISOString(),
       next_action: "Preparar la reunión: revisar web y redes del prospecto",
-      next_action_at: startsAt.toISOString().slice(0, 10),
+      next_action_at: limaDate(new Date(startsAt)),
     })
     .eq("id", parsed.data.prospect_id);
   await supabase.from("automation_runs").insert({

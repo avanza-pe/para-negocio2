@@ -8,6 +8,7 @@ import { PageHeader } from "@/components/page-header";
 import { setPaymentStatus } from "@/lib/actions/crm";
 import { requireStaff } from "@/lib/auth";
 import { PAYMENT_STATUS, type Client } from "@/lib/crm";
+import { formatPhone } from "@/lib/phone";
 
 export const metadata = { title: "Clientes" };
 
@@ -54,7 +55,7 @@ export default async function ClientsPage() {
                   <Link href={`/dashboard/clientes/${c.id}`} className="font-medium underline-offset-2 hover:underline">
                     {c.name}
                   </Link>
-                  <div className="text-xs text-muted-foreground">{c.contact}</div>
+                  <div className="text-xs text-muted-foreground">{[c.contact, formatPhone(c.contact_phone)].filter(Boolean).join(" · ")}</div>
                 </TableCell>
                 <TableCell>{c.service}</TableCell>
                 <TableCell>{pen.format(Number(c.price_pen))}</TableCell>

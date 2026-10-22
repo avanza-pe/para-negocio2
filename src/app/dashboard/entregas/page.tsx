@@ -1,9 +1,9 @@
 import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { NewDeliverableDialog } from "@/components/dialogs";
-import { InlineSelect } from "@/components/form-bits";
+import { DeleteButton, InlineSelect } from "@/components/form-bits";
 import { PageHeader } from "@/components/page-header";
-import { setDeliverableStatus } from "@/lib/actions/crm";
+import { deleteDeliverable, setDeliverableStatus } from "@/lib/actions/crm";
 import { requireStaff } from "@/lib/auth";
 import { DELIVERABLE_STATUS, type Deliverable } from "@/lib/crm";
 
@@ -36,12 +36,13 @@ export default async function DeliverablesPage() {
               <TableHead>Fecha límite</TableHead>
               <TableHead>Estado</TableHead>
               <TableHead>Revisiones</TableHead>
+              <TableHead className="w-10" />
             </TableRow>
           </TableHeader>
           <TableBody>
             {rows.length === 0 && (
               <TableRow>
-                <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
+                <TableCell colSpan={7} className="h-24 text-center text-muted-foreground">
                   Sin entregas todavía.
                 </TableCell>
               </TableRow>
@@ -64,6 +65,9 @@ export default async function DeliverablesPage() {
                   <InlineSelect id={d.id} value={d.status} options={DELIVERABLE_STATUS} action={setDeliverableStatus} className="w-40" />
                 </TableCell>
                 <TableCell>{d.revisions_left}</TableCell>
+                <TableCell>
+                  <DeleteButton action={deleteDeliverable.bind(null, d.id)} label={`Eliminar ${d.piece}`} confirm={`¿Eliminar la entrega «${d.piece}»?`} />
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

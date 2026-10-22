@@ -7,6 +7,7 @@ import { LogoMark } from "@/components/logo";
 import { requireStaff } from "@/lib/auth";
 import { getToday, todayCount } from "@/lib/today";
 import { STAGES } from "@/lib/crm";
+import { isMonthly } from "@/lib/offer";
 
 const pen = new Intl.NumberFormat("es-PE", { style: "currency", currency: "PEN", maximumFractionDigits: 0 });
 
@@ -17,7 +18,7 @@ export default async function DashboardPage() {
 
   const [prospects, clients, meetings, today] = await Promise.all([
     supabase.from("prospects").select("stage, channel, sector, created_at"),
-    supabase.from("clients").select("name, service, price_pen, payment_status, start_date"),
+    supabase.from("clients").select("id, name, service, price_pen, payment_status, start_date").order("created_at", { ascending: false }),
     supabase.from("meetings").select("starts_at").gte("starts_at", monthStart),
     getToday(supabase),
   ]);
@@ -29,7 +30,8 @@ export default async function DashboardPage() {
 
   const total = rows.length;
   const won = counts.ganado;
-  const mrr = cl.reduce((s, c) => s + Number(c.price_pen), 0);
+  // Solo servicios mensuales: un proyecto puntual no es facturación recurrente.
+  const mrr = cl.filter((c) => isMonthly(c.service)).reduce((s, c) => s + Number(c.price_pen), 0);
   const unpaid = cl.filter((c) => c.payment_status !== "pagado").length;
   const conversion = total ? Math.round((won / total) * 100) : 0;
   const pending = todayCount(today);
@@ -79,7 +81,7 @@ export default async function DashboardPage() {
           <CardContent className="grid gap-3">
             {cl.length === 0 && <p className="text-sm text-muted-foreground">Aún no hay clientes.</p>}
             {cl.slice(0, 4).map((c) => (
-              <Link key={c.name} href="/dashboard/clientes" className="flex items-center gap-3 rounded-xl border p-3 text-sm transition-colors hover:bg-accent">
+              <Link key={c.id} href={`/dashboard/clientes/${c.id}`} className="flex items-center gap-3 rounded-xl border p-3 text-sm transition-colors hover:bg-accent">
                 <span className="grid size-9 place-items-center rounded-lg bg-primary/15 text-primary">{c.name.slice(0, 1).toUpperCase()}</span>
                 <span className="min-w-0 flex-1">
                   <span className="block truncate font-medium">{c.name}</span>

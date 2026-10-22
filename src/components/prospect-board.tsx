@@ -1,9 +1,10 @@
 import { Mail, Phone } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { ConvertToClientDialog } from "@/components/dialogs";
+import { ConvertToClientDialog, EditProspectDialog } from "@/components/dialogs";
 import { InlineSelect } from "@/components/form-bits";
 import { setProspectStage } from "@/lib/actions/crm";
 import { STAGES, type Prospect } from "@/lib/crm";
+import { formatPhone } from "@/lib/phone";
 
 const COLUMN_TONE: Record<string, string> = {
   nuevo: "bg-sky-500",
@@ -18,8 +19,7 @@ const COLUMN_TONE: Record<string, string> = {
 };
 
 /** Tablero por etapas. Mover una tarjeta = cambiar su etapa con el selector. */
-export function ProspectBoard({ prospects, converted }: { prospects: Prospect[]; converted: Set<string> }) {
-  const today = new Date().toISOString().slice(0, 10);
+export function ProspectBoard({ prospects, converted, today }: { prospects: Prospect[]; converted: Set<string>; today: string }) {
   return (
     <div className="flex gap-3 overflow-x-auto pb-3">
       {STAGES.map((stage) => {
@@ -41,7 +41,10 @@ export function ProspectBoard({ prospects, converted }: { prospects: Prospect[];
                 const overdue = p.next_action_at && p.next_action_at <= today && !["ganado", "perdido"].includes(p.stage);
                 return (
                   <li key={p.id} className="rounded-lg border bg-card p-3 shadow-xs">
-                    <p className="font-medium">{p.company}</p>
+                    <div className="flex items-start justify-between gap-2">
+                      <p className="font-medium">{p.company}</p>
+                      <EditProspectDialog prospect={p} />
+                    </div>
                     <p className="text-xs text-muted-foreground">{[p.contact_name, p.sector].filter(Boolean).join(" · ")}</p>
                     <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
                       {p.contact_email && (
@@ -51,10 +54,13 @@ export function ProspectBoard({ prospects, converted }: { prospects: Prospect[];
                       )}
                       {p.contact_phone && (
                         <span className="flex items-center gap-1">
-                          <Phone className="size-3" /> {p.contact_phone}
+                          <Phone className="size-3" /> {formatPhone(p.contact_phone)}
                         </span>
                       )}
                     </div>
+                    {!p.next_action && !["ganado", "perdido"].includes(p.stage) && (
+                      <p className="mt-2 rounded-md bg-destructive/10 px-2 py-1 text-xs text-destructive">Sin próxima acción</p>
+                    )}
                     {p.next_action && (
                       <p className={`mt-2 rounded-md px-2 py-1 text-xs ${overdue ? "bg-destructive/10 text-destructive" : "bg-muted"}`}>
                         {p.next_action}
