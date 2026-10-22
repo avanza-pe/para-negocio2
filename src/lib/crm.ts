@@ -57,6 +57,33 @@ export const REPORT_STATUS = [
   { value: "enviado", label: "Enviado" },
 ] as const;
 
+export const PROPOSAL_STATUS = [
+  { value: "borrador", label: "Borrador" },
+  { value: "enviada", label: "Enviada" },
+  { value: "aceptada", label: "Aceptada" },
+  { value: "rechazada", label: "Rechazada" },
+] as const;
+
+export type Proposal = {
+  id: string;
+  prospect_id: string | null;
+  client_name: string;
+  title: string;
+  package: string;
+  price_pen: number;
+  price_unit: string;
+  validity_days: number;
+  includes: string;
+  exclusions: string;
+  client_materials: string | null;
+  revisions: number;
+  timeline: string | null;
+  payment_terms: string;
+  notes: string | null;
+  status: string;
+  created_at: string;
+};
+
 export const SERVICES = [
   "Contenido Inicio",
   "Contenido + Reels",

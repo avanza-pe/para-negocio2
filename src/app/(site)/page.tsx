@@ -3,17 +3,15 @@ import { AnalyticsBento, type BentoData } from "@/components/analytics-bento";
 import { BentoCard, BentoGrid } from "@/components/bento";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { ContactGlobe } from "@/components/contact-globe";
 import { CtaBanner } from "@/components/cta-banner";
 import { FaqSection } from "@/components/faq-section";
 import { HeroCollage } from "@/components/hero-collage";
 import { ImageStream } from "@/components/image-stream";
-import { Marquee } from "@/components/marquee";
 import { HeroStage, Reveal } from "@/components/motion";
 import { Pricing } from "@/components/pricing";
 import { ProcessSteps } from "@/components/process-steps";
-import { PROCESS, SITE, TOOLS } from "@/lib/site";
+import { PROCESS, SITE } from "@/lib/site";
 
 const SAMPLE: BentoData = {
   labels: ["Mes 1", "Mes 2", "Mes 3", "Mes 4", "Mes 5", "Mes 6"],
@@ -38,11 +36,6 @@ const SAMPLE: BentoData = {
   ],
 };
 
-const SAMPLES = [
-  { title: "Calendario de contenido", sector: "Restaurante", tone: "from-cyan-500/30 to-blue-600/20" },
-  { title: "Reel de lanzamiento", sector: "Tienda de ropa", tone: "from-blue-600/30 to-fuchsia-500/20" },
-  { title: "Campaña de temporada", sector: "Clínica dental", tone: "from-fuchsia-500/30 to-amber-400/20" },
-];
 
 function IconBadge({ icon: Icon }: { icon: typeof Palette }) {
   return (
@@ -98,12 +91,6 @@ export default function HomePage() {
           </div>
         </Reveal>
         <ImageStream />
-      </section>
-
-      {/* HERRAMIENTAS REALES */}
-      <section aria-label="Herramientas que usamos" className="border-y bg-background/50 py-5 backdrop-blur">
-        <p className="mb-3 text-center text-xs uppercase tracking-widest text-muted-foreground">Herramientas con las que producimos y medimos</p>
-        <Marquee items={[...TOOLS, ...TOOLS]} />
       </section>
 
       {/* SERVICIOS · BENTO */}
@@ -189,29 +176,6 @@ export default function HomePage() {
         <Reveal delay={0.1} className="mt-10">
           <AnalyticsBento data={SAMPLE} sample />
         </Reveal>
-      </section>
-
-      {/* PORTAFOLIO */}
-      <section id="portafolio" className="mx-auto max-w-6xl scroll-mt-24 px-4 pb-24">
-        <Reveal>
-          <h2 className="text-3xl font-semibold sm:text-4xl">Portafolio</h2>
-          <p className="mt-3 text-muted-foreground">Muestras conceptuales de nuestro trabajo propio. No son resultados de clientes.</p>
-        </Reveal>
-        <div className="mt-10 grid gap-4 sm:grid-cols-3">
-          {SAMPLES.map((s, i) => (
-            <Reveal key={s.title} delay={i * 0.08}>
-              <Card className="overflow-hidden bg-card/70 p-0 backdrop-blur transition-transform duration-300 hover:-translate-y-1">
-                <div className={`grid aspect-[4/3] place-items-center bg-gradient-to-br ${s.tone}`}>
-                  <span className="rounded-full bg-background/70 px-3 py-1 text-xs backdrop-blur">Muestra · {s.sector}</span>
-                </div>
-                <div className="p-4">
-                  <h3 className="font-semibold">{s.title}</h3>
-                  <p className="text-sm text-muted-foreground">Muestra conceptual</p>
-                </div>
-              </Card>
-            </Reveal>
-          ))}
-        </div>
       </section>
 
       {/* PLANES */}

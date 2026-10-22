@@ -149,6 +149,27 @@
   }
 }
 
+/* Impresión / PDF de propuestas y reportes: solo el contenido, en blanco y negro. */
+@media print {
+  [data-slot="sidebar-wrapper"] > [data-slot="sidebar"],
+  [data-slot="sidebar-gap"],
+  header,
+  nav[aria-label],
+  [data-print-hide] {
+    display: none !important;
+  }
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  [data-print-sheet] {
+    border: none !important;
+    box-shadow: none !important;
+    background: #fff !important;
+    color: #000 !important;
+  }
+}
+
 @keyframes wire-flow {
   to { stroke-dashoffset: -24; }
 }

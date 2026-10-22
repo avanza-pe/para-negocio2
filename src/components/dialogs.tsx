@@ -7,6 +7,7 @@ import { createClientRecord, createDeliverable, createMetric, createProspect } f
 import { createContentItem } from "@/lib/actions/content";
 import { createMeeting } from "@/lib/actions/meetings";
 import { generateReport } from "@/lib/actions/reports";
+import { createProposal } from "@/lib/actions/proposals";
 import { convertToClient } from "@/lib/actions/onboarding";
 import { SERVICES } from "@/lib/crm";
 
@@ -140,6 +141,32 @@ export function NewReportDialog({ clients }: { clients: Option[] }) {
         <>
           <SelectField label="Cliente" name="client_id" options={clients} state={s} />
           <TextField label="Mes" name="period" type="month" required state={s} />
+        </>
+      )}
+    </FormDialog>
+  );
+}
+
+export function NewProposalDialog({ prospects }: { prospects: Option[] }) {
+  return (
+    <FormDialog
+      title="Nueva propuesta"
+      description="Se arma con la plantilla del paquete. Puedes imprimirla o guardarla como PDF."
+      trigger="Nueva propuesta"
+      action={createProposal}
+      successMessage="Propuesta creada"
+    >
+      {(s) => (
+        <>
+          <SelectField label="Prospecto" name="prospect_id" options={prospects} state={s} />
+          <SelectField label="Paquete" name="package" options={SERVICES.map((v) => ({ value: v, label: v }))} state={s} />
+          <div className="grid grid-cols-2 gap-3">
+            <TextField label="Precio (S/)" name="price_pen" type="number" min="0" step="1" defaultValue="0" state={s} />
+            <TextField label="Vigencia (días)" name="validity_days" type="number" min="1" max="90" defaultValue="7" state={s} />
+            <TextField label="Rondas de cambios" name="revisions" type="number" min="0" defaultValue="1" state={s} />
+            <TextField label="Plazo de entrega" name="timeline" placeholder="Ej. 7 días hábiles" state={s} />
+          </div>
+          <TextField label="Notas para el cliente" name="notes" state={s} />
         </>
       )}
     </FormDialog>

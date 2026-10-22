@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Bot, CalendarClock, FileText, FolderKanban, ListTodo, Sparkles, LayoutDashboard, LineChart, LogOut, Target, Users } from "lucide-react";
+import { Bot, CalendarClock, FilePen, FileText, FolderKanban, ListTodo, Sparkles, LayoutDashboard, LineChart, LogOut, Target, Users } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -22,6 +22,7 @@ const NAV = [
   { href: "/dashboard/hoy", label: "Hoy", icon: ListTodo },
   { href: "/dashboard/prospectos", label: "Prospectos", icon: Target },
   { href: "/dashboard/reuniones", label: "Reuniones", icon: CalendarClock },
+  { href: "/dashboard/propuestas", label: "Propuestas", icon: FilePen },
   { href: "/dashboard/clientes", label: "Clientes", icon: Users },
   { href: "/dashboard/produccion", label: "Producción", icon: Sparkles },
   { href: "/dashboard/entregas", label: "Entregas", icon: FolderKanban },
