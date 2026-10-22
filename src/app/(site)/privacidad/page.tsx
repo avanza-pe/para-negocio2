@@ -21,6 +21,8 @@ export default function PrivacyPage() {
       <p>No vendemos tus datos ni te enviamos mensajes masivos no solicitados.</p>
       <h2>Con quién los compartimos</h2>
       <p>Con proveedores que alojan el servicio (hosting y base de datos) y envían avisos internos. No los compartimos con terceros para publicidad.</p>
+      <h2>Analítica y cookies</h2>
+      <p>Si aceptas el aviso de cookies, usamos Google Analytics con IP anonimizada para medir visitas y conversiones. Si lo rechazas, no se carga ninguna herramienta de analítica.</p>
       <h2>Cuánto tiempo los conservamos</h2>
       <p>Mientras exista una relación comercial o hasta que solicites su eliminación.</p>
       <h2>Tus derechos</h2>

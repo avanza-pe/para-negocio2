@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Analytics } from "@/components/analytics";
 import { Logo } from "@/components/logo";
 import { SiteBackground } from "@/components/site-background";
 import { SiteNavbar } from "@/components/site-navbar";
@@ -9,6 +10,7 @@ export default function SiteLayout({ children }: LayoutProps<"/">) {
   return (
     <>
       <SmoothScroll />
+      <Analytics gaId={SITE.gaId} />
       <SiteBackground />
       <SiteNavbar />
       <main className="flex-1 pt-20">{children}</main>

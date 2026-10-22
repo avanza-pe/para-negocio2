@@ -1,5 +1,4 @@
 import { ArrowRight, Bot, CalendarCheck, Clapperboard, LayoutTemplate, Megaphone, Palette, Play, ShieldCheck } from "lucide-react";
-import { AnalyticsBento, type BentoData } from "@/components/analytics-bento";
 import { BentoCard, BentoGrid } from "@/components/bento";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -13,30 +12,6 @@ import { Pricing } from "@/components/pricing";
 import { ProcessSteps } from "@/components/process-steps";
 import { PROCESS, SITE } from "@/lib/site";
 
-const SAMPLE: BentoData = {
-  labels: ["Mes 1", "Mes 2", "Mes 3", "Mes 4", "Mes 5", "Mes 6"],
-  line: [12, 18, 15, 26, 31, 42],
-  lineLabel: "Consultas generadas (ejemplo)",
-  waveA: [10, 14, 12, 20, 24, 30],
-  waveALabel: "Orgánico",
-  waveB: [4, 6, 9, 8, 14, 18],
-  waveBLabel: "Campañas",
-  categories: [
-    { name: "Reels", value: 38 },
-    { name: "Posts", value: 29 },
-    { name: "Stories", value: 18 },
-    { name: "Landing", value: 12 },
-  ],
-  radar: [
-    { name: "Alcance", value: 70 },
-    { name: "Clics", value: 55 },
-    { name: "Consultas", value: 80 },
-    { name: "Cierres", value: 40 },
-    { name: "Retención", value: 60 },
-  ],
-};
-
-
 function IconBadge({ icon: Icon }: { icon: typeof Palette }) {
   return (
     <span className="grid size-11 place-items-center rounded-2xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
@@ -45,9 +20,20 @@ function IconBadge({ icon: Icon }: { icon: typeof Palette }) {
   );
 }
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: SITE.name,
+  description: SITE.description,
+  url: SITE.url,
+  areaServed: "PE",
+  serviceType: ["Marketing digital", "Contenido para redes sociales", "Automatización de leads", "Landing pages"],
+};
+
 export default function HomePage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\u003c") }} />
       {/* HERO */}
       <HeroStage className="relative px-4 pb-12 pt-16 text-center sm:pt-24">
         <div className="mx-auto max-w-4xl">
@@ -165,19 +151,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* MÉTRICAS · BENTO */}
-      <section id="metricas" className="mx-auto max-w-6xl scroll-mt-24 px-4 py-24">
-        <Reveal>
-          <h2 className="text-3xl font-semibold sm:text-4xl">Medimos lo que importa</h2>
-          <p className="mt-3 max-w-2xl text-muted-foreground">
-            Reportamos la métrica del objetivo que contratamos juntos, solo con datos verificables. Esto es un ejemplo ilustrativo del tipo de reporte.
-          </p>
-        </Reveal>
-        <Reveal delay={0.1} className="mt-10">
-          <AnalyticsBento data={SAMPLE} sample />
-        </Reveal>
-      </section>
-
       {/* PLANES */}
       <section id="planes" className="scroll-mt-24 border-y bg-muted/30 py-24 backdrop-blur">
         <div className="mx-auto max-w-6xl px-4">
@@ -196,16 +169,16 @@ export default function HomePage() {
         <FaqSection />
       </section>
 
+      {/* CONTACTO */}
+      <section id="contacto" className="mx-auto max-w-6xl scroll-mt-24 px-4 pb-28">
+        <ContactGlobe />
+      </section>
+
       {/* CTA */}
       <section className="mx-auto max-w-6xl px-4 pb-24">
         <Reveal>
           <CtaBanner />
         </Reveal>
-      </section>
-
-      {/* CONTACTO */}
-      <section id="contacto" className="mx-auto max-w-6xl scroll-mt-24 px-4 pb-28">
-        <ContactGlobe />
       </section>
     </>
   );

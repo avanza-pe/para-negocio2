@@ -8,7 +8,7 @@ export function FaqSection() {
   const wa = whatsappLink();
   return (
     <div className="grid gap-10 lg:grid-cols-[1fr_1.6fr]">
-      <div className="lg:sticky lg:top-28 lg:self-start">
+      <div>
         <h2 className="text-3xl font-semibold sm:text-4xl">Preguntas frecuentes</h2>
         <p className="mt-3 text-muted-foreground">
           Lo que más nos preguntan antes de empezar. Si tu duda no está aquí, escríbenos.

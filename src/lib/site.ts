@@ -10,6 +10,7 @@ export const SITE = {
   bookingUrl: publicEnv.NEXT_PUBLIC_BOOKING_URL,
   whatsapp: publicEnv.NEXT_PUBLIC_WHATSAPP_NUMBER,
   contactEmail: publicEnv.NEXT_PUBLIC_CONTACT_EMAIL,
+  gaId: publicEnv.NEXT_PUBLIC_GA_ID,
 } as const;
 
 export const whatsappLink = (text = "Hola, quiero agendar un diagnóstico de 15 minutos") =>
