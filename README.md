@@ -24,6 +24,8 @@ Reemplaza Google Sheets + Make por una app propia: **landing + formulario → CR
 
 ## Puesta en marcha
 
+> **Guía completa paso a paso: [`docs/guia-paso-a-paso.md`](docs/guia-paso-a-paso.md)** (Supabase, Vercel, Telegram, Brevo, IA gratis, agenda, Mercado Pago y restaurantes).
+
 ```bash
 npm install
 cp .env.example .env.local   # y rellena los valores
