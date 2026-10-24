@@ -1,0 +1,51 @@
+# ───────────────────────────────────────────────────────────────
+# Aumenta · variables para Vercel (plantilla SIN claves reales)
+# Vercel → Project → Settings → Environment Variables → pega todo en el
+# primer campo "Key" (detecta el formato KEY=valor) y rellena los valores.
+# Las líneas vacías se pueden borrar si no usas esa integración.
+# Después de cambiar variables: Deployments → ⋯ → Redeploy.
+# ───────────────────────────────────────────────────────────────
+
+# ── OBLIGATORIAS ──
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+NEXT_PUBLIC_SITE_URL=https://TU-PROYECTO.vercel.app
+CRON_SECRET=
+NEXT_PUBLIC_WHATSAPP_NUMBER=51999999999
+NEXT_PUBLIC_CONTACT_EMAIL=
+
+# ── Agenda (Cal.com gratis o Calendly) ──
+NEXT_PUBLIC_BOOKING_URL=
+CALCOM_WEBHOOK_SECRET=
+CALENDLY_WEBHOOK_SIGNING_KEY=
+
+# ── Avisos gratis: Telegram ──
+TELEGRAM_BOT_TOKEN=
+TELEGRAM_CHAT_ID=
+
+# ── Correo gratis: Brevo ──
+BREVO_API_KEY=
+BREVO_SENDER_EMAIL=
+BREVO_SENDER_NAME=Aumenta
+NOTIFY_EMAIL_TO=
+
+# ── IA gratis (basta una) ──
+GEMINI_API_KEY=
+GROQ_API_KEY=
+AI_PROVIDER=
+AI_MODEL=
+AI_DAILY_LIMIT=5
+# ANTHROPIC_API_KEY=   (de pago, opcional)
+
+# ── Cobros ──
+NEXT_PUBLIC_YAPE_NUMBER=
+NEXT_PUBLIC_YAPE_NAME=
+MP_ACCESS_TOKEN=
+NEXT_PUBLIC_MP_PUBLIC_KEY=
+MP_WEBHOOK_SECRET=
+MP_STATEMENT_DESCRIPTOR=AUMENTA
+
+# ── Opcionales ──
+NEXT_PUBLIC_GA_ID=
+NEXT_PUBLIC_GSC_VERIFICATION=
