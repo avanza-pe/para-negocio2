@@ -1,4 +1,4 @@
--- AVANZA: esquema completo (migraciones 0001 a 0010 en orden).
+-- AUMENTA: esquema completo (migraciones 0001 a 0010 en orden).
 -- Supabase → SQL Editor → pega TODO esto → Run. Solo en un proyecto NUEVO (0001-0006 no son re-ejecutables).
 
 -- ═════════ 0001_init.sql ═════════

@@ -1,4 +1,4 @@
-# Guía paso a paso: dejar AVANZA funcionando
+# Guía paso a paso: dejar AUMENTA funcionando
 
 Sigue las fases en orden. Cada fase termina con una **prueba** para saber que quedó bien. Tiempo total: 2 a 3 horas.
 
@@ -18,7 +18,7 @@ Cuentas que vas a crear (usa el mismo correo): GitHub (ya la tienes), Supabase, 
 
 ## Fase 1. Base de datos: Supabase (20 min)
 
-1. Entra a supabase.com → **New project**. Nombre `avanza`, elige una contraseña fuerte (guárdala), región `South America (São Paulo)`, plan **Free**.
+1. Entra a supabase.com → **New project**. Nombre `aumenta`, elige una contraseña fuerte (guárdala), región `South America (São Paulo)`, plan **Free**.
 2. Espera 2 minutos a que cree el proyecto.
 3. Menú izquierdo → **SQL Editor** → **New query**.
 4. Abre en GitHub el archivo `supabase/schema-completo.sql`, copia **todo** y pégalo. Pulsa **Run**.
@@ -92,7 +92,7 @@ Solo si quieres ver todo antes de publicar.
 1. brevo.com → crea cuenta (plan Free, ~300 correos al día).
 2. **SMTP & API → API Keys → Generate**. Copia la clave.
 3. **Senders, Domains → Senders → Add a sender**: tu correo de la agencia; verifica con el enlace que te llega.
-4. En Vercel agrega: `BREVO_API_KEY`, `BREVO_SENDER_EMAIL` (el verificado), `BREVO_SENDER_NAME` (`AVANZA`), `NOTIFY_EMAIL_TO` (donde quieres recibir avisos). Redeploy.
+4. En Vercel agrega: `BREVO_API_KEY`, `BREVO_SENDER_EMAIL` (el verificado), `BREVO_SENDER_NAME` (`AUMENTA`), `NOTIFY_EMAIL_TO` (donde quieres recibir avisos). Redeploy.
 
 **Prueba:** otro formulario de prueba: te llega el correo.
 

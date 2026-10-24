@@ -67,7 +67,7 @@ export function AutomationGraph() {
         <g transform={`translate(${hub.x - 70},${hub.y - 34})`}>
           <rect width="140" height="68" rx="10" fill="#1b1d2b" stroke="#7c6cf0" strokeWidth="1.5" />
           <rect width="140" height="16" rx="10" fill="#5b4bd5" />
-          <text x="10" y="12" fontSize="9" fill="#fff" fontWeight="700">AVANZA · CRM</text>
+          <text x="10" y="12" fontSize="9" fill="#fff" fontWeight="700">AUMENTA · CRM</text>
           <text x="10" y="36" fontSize="11" fill="#fff" fontWeight="600">automation_runs</text>
           <text x="10" y="50" fontSize="8.5" fill="#9a9cc0">Cada ejecución queda registrada</text>
           <circle cx="0" cy="40" r="4" fill="#5fd4e8" />

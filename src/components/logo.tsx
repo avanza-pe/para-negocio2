@@ -1,9 +1,9 @@
 import { cn } from "@/lib/utils";
 
-/** Isotipo AVANZA: "A" redondeada (usa el color del texto) + triángulo en degradado cian → azul → magenta. */
+/** Isotipo AUMENTA: "A" redondeada (usa el color del texto) + triángulo en degradado cian → azul → magenta. */
 export function LogoMark({ className }: { className?: string }) {
   return (
-    <svg viewBox="100 250 1040 740" role="img" aria-label="AVANZA" className={cn("h-6 w-auto", className)}>
+    <svg viewBox="100 250 1040 740" role="img" aria-label="AUMENTA" className={cn("h-6 w-auto", className)}>
       <defs>
         <linearGradient id="avz-tri" x1="0.25" y1="0" x2="0.85" y2="1">
           <stop offset="0" stopColor="#22d3ee" />
@@ -27,7 +27,7 @@ export function Logo({ className }: { className?: string }) {
   return (
     <span className={cn("inline-flex items-center gap-2", className)}>
       <LogoMark />
-      <span className="font-heading text-lg font-semibold tracking-[0.18em]">AVANZA</span>
+      <span className="font-heading text-lg font-semibold tracking-[0.18em]">AUMENTA</span>
     </span>
   );
 }

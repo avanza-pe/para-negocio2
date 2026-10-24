@@ -6,15 +6,15 @@
 - [ ] `.env.local` **no** se sube (ya está en `.gitignore`).
 
 ## 1. GitHub
-1. En GitHub: **New repository** → nombre `avanza` → **Private** → sin README ni .gitignore.
+1. En GitHub: **New repository** → nombre `aumenta` → **Private** → sin README ni .gitignore.
 2. En la carpeta del proyecto:
    ```bash
-   git remote add origin https://github.com/williebs64uwu-create/avanza.git
+   git remote add origin https://github.com/williebs64uwu-create/aumenta.git
    git push -u origin main
    ```
 
 ## 2. Vercel
-1. [vercel.com/new](https://vercel.com/new) → importa el repo `avanza` (framework: Next.js, todo por defecto).
+1. [vercel.com/new](https://vercel.com/new) → importa el repo `aumenta` (framework: Next.js, todo por defecto).
 2. **Environment Variables** (Production, Preview y Development):
 
 | Variable | Valor |

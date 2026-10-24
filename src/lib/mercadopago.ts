@@ -78,7 +78,7 @@ export function createPreference({
       ...(payerEmail ? { payer: { email: payerEmail } } : {}),
       back_urls: { success: `${back}?estado=ok`, pending: `${back}?estado=pendiente`, failure: `${back}?estado=error` },
       ...(https ? { auto_return: "approved", notification_url: `${origin}/api/webhooks/mercadopago` } : {}),
-      statement_descriptor: (process.env.MP_STATEMENT_DESCRIPTOR || "AVANZA").slice(0, 22),
+      statement_descriptor: (process.env.MP_STATEMENT_DESCRIPTOR || "AUMENTA").slice(0, 22),
     }),
   });
 }

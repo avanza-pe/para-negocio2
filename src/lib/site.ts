@@ -2,7 +2,7 @@ import { publicEnv } from "@/lib/env";
 
 /** Nombre provisional (informe §8, 08:30). Cámbialo aquí y se actualiza en toda la web. */
 export const SITE = {
-  name: "AVANZA",
+  name: "Aumenta",
   tagline: "Haz que tu negocio avance con contenido y automatización con IA",
   description:
     "Agencia de marketing digital con IA en Perú: contenido para redes, carta digital para restaurantes y cafeterías, y automatización de pedidos, reservas y leads. Diagnóstico de 15 minutos sin costo.",
