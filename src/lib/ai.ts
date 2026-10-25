@@ -65,7 +65,7 @@ export async function generateObject<S extends z.ZodType>({
   if (!cfg) throw new Error("La IA no está configurada");
 
   if (cfg.provider === "anthropic") {
-    const client = new Anthropic({ apiKey: cfg.key, timeout: 120_000, maxRetries: 1 });
+    const client = new Anthropic({ apiKey: cfg.key, timeout: 55_000, maxRetries: 0 });
     try {
       const res = await client.beta.messages.parse({
         model: cfg.model,
@@ -121,7 +121,7 @@ export async function generateObject<S extends z.ZodType>({
         },
       ],
     }),
-    signal: AbortSignal.timeout(90_000),
+    signal: AbortSignal.timeout(55_000),
   });
   if (res.status === 429) throw new Error("Límite gratuito de la IA alcanzado por ahora. Intenta en unos minutos.");
   if (!res.ok) throw new Error(`La API de IA respondió ${res.status}`);

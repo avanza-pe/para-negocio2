@@ -33,7 +33,7 @@ import { SITE } from "@/lib/site";
 import { loadMenu, venueStats } from "@/lib/venues";
 
 // Las acciones con IA pueden tardar (los planes gratis responden más lento).
-export const maxDuration = 120;
+export const maxDuration = 60;
 
 export const metadata = { title: "Local" };
 

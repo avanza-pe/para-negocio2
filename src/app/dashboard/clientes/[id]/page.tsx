@@ -18,7 +18,7 @@ import { isGastro, label, PAY_STATUS, PAYMENT_STATUS, type Client, type ClientBr
 import { formatPhone, waLink } from "@/lib/phone";
 
 // Las acciones con IA (sugerir personas) pueden tardar en los planes gratis.
-export const maxDuration = 120;
+export const maxDuration = 60;
 
 export const metadata = { title: "Cliente" };
 

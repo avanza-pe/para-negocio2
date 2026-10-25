@@ -14,7 +14,7 @@ import { CONTENT_STATUS, type ClientBrief, type ContentItem, type Persona } from
 import { cn } from "@/lib/utils";
 
 // Las acciones con IA pueden tardar (los planes gratis responden más lento).
-export const maxDuration = 120;
+export const maxDuration = 60;
 
 export const metadata = { title: "Producción" };
 
