@@ -7,7 +7,7 @@ import { LoginForm } from "./login-form";
 export const metadata: Metadata = { title: "Ingresar", robots: { index: false } };
 
 export default async function LoginPage({ searchParams }: PageProps<"/login">) {
-  const { next, error } = await searchParams;
+  const { next, error, motivo } = await searchParams;
   return (
     <main className="relative grid min-h-screen place-items-center overflow-hidden p-4">
       <div className="bg-grid absolute inset-0 -z-10" aria-hidden />
@@ -26,6 +26,7 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
           {error === "google" && (
             <p role="alert" className="text-sm text-destructive">
               No se pudo ingresar con Google. Intenta de nuevo.
+              {typeof motivo === "string" && motivo && <span className="mt-1 block text-xs opacity-80">Motivo: {motivo}</span>}
             </p>
           )}
           <GoogleButton />
